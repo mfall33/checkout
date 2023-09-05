@@ -1,0 +1,128 @@
+.bg-black {
+    background: $black;
+}
+
+.bg-white {
+    background: $white;
+}
+
+.bg-lightgrey {
+    background: $lightgrey;
+}
+
+.bg-lavender {
+    background: $lavender;
+}
+
+.bg-yellow {
+    background: $yellow;
+}
+
+.text-black {
+    color: $black;
+}
+
+.text-white {
+    color: $white;
+}
+
+.text-lightgrey {
+    color: $lightgrey;
+}
+
+.text-lavender {
+    color: $lavender;
+}
+
+.text-yellow {
+    color: $yellow;
+}
+
+.cart-items-amount {
+    margin-left: 5px;
+    background: $yellow;
+    opacity: 0.8;
+    border-radius: 10px;
+    padding: 0px 4px;
+}
+
+.card {
+    padding: 10px;
+    border: 1px solid $lavender;
+    border-radius: $card-radius;
+
+    .card-img-cont {
+        width: '100%';
+        position: relative;
+
+        .card-like {
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    }
+
+    .card-title-cont {
+        padding-bottom: 10px;
+    }
+
+    .card-price-cont {
+        padding-top: 10px;
+    }
+
+}
+
+.dropdown {
+    position: relative;
+    z-index: 999;
+    transition: all 0.5s ease;
+
+    .dropdown-trigger {
+        transition: all 0.5s ease;
+        border: 2px solid $lavender;
+        text-align: center;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .dropdown-trigger.active {
+        border: 2px solid $black;
+        font-weight: 600;
+    }
+
+    .dropdown-content {
+        height: 0;
+        position: absolute;
+        min-width: 300px;
+        top: 100%;
+        overflow: hidden;
+        background: $lavender;
+        padding: 0;
+        border-end-start-radius: 10px;
+        border-end-end-radius: 10px;
+    }
+}
+
+.dropdown.left {
+    .dropdown-content {
+        border-top-left-radius: 10px;
+        right: 0;
+    }
+}
+
+.dropdown.right {
+    .dropdown-content {
+        border-top-right-radius: 10px;
+        left: 0;
+    }
+}
+
+.dropdown:hover {
+    .dropdown-trigger {}
+
+    .dropdown-content {
+        height: auto;
+        padding: 1rem;
+    }
+}
