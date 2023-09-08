@@ -2,18 +2,17 @@
 
 import _ from "underscore";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import React, { useState, FC, useEffect } from "react"
-import { useRouter } from 'next/navigation';
 
 import { IProduct } from "@/models";
 import { getProducts } from "@/api/products";
-import { Card, Dropdown, Header, LoadMore } from "@/components"
+import { Card, Dropdown, Header, LoadMore, LoadingCover } from "@/components"
 import { BRAND, FILTER_OPTIONS, PRICE_RANGE, SORT_BY, SORT_OPTIONS } from "@/constants";
-import useStore from "@/store";
 
 const Products: FC = () => {
 
-  const router = useRouter();
+  const session = useSession();
 
   const [page, setPage] = useState<Number>(0);
   const [loading, setLoading] = useState<Boolean>(true);
@@ -28,12 +27,6 @@ const Products: FC = () => {
 
   const [range, setRange] = useState<number>(0);
   const [maxRange, setMaxRange] = useState<number>(0);
-
-  const accessToken = useStore((state) => state.accessToken);
-
-  const navigateToLogin = () => {
-    router.push('/login');
-  };
 
   const handleSortClear = () => {
 
@@ -86,54 +79,69 @@ const Products: FC = () => {
 
   useEffect(() => {
 
-    getProducts(page, accessToken)
-      .then((data) => {
+    if (session.status !== 'loading') {
 
-        // initialize array
-        let newProducts = [...products, ...data.products];
+      getProducts(page, session.data?.user.access_token)
+        .then((data) => {
 
-        // sort array
-        newProducts = sortProducts(newProducts, sortBy);
+          // initialize array
+          let newProducts = [...products, ...data.products];
 
-        // set array
-        setProducts(newProducts);
+          // sort array
+          newProducts = sortProducts(newProducts, sortBy);
 
-        const dearestProductPrice = Math.max(...newProducts.map(prod => prod.price));
-        setMaxRange(dearestProductPrice);
-        // if range is 0 it needs to be set at highest to show all
-        if (range === 0) {
-          setRange(dearestProductPrice);
-        }
+          // set array
+          setProducts(newProducts);
 
-        let tmpBrands: String[] = []
-        newProducts.forEach((prod: IProduct) => {
-          if (tmpBrands.indexOf(prod.brand) < 0)
-            tmpBrands.push(prod.brand)
+          const dearestProductPrice = Math.max(...newProducts.map(prod => prod.price));
+          setMaxRange(dearestProductPrice);
+          // if range is 0 it needs to be set at highest to show all
+          if (range === 0) {
+            setRange(dearestProductPrice);
+          }
+
+          let tmpBrands: String[] = []
+          newProducts.forEach((prod: IProduct) => {
+            if (tmpBrands.indexOf(prod.brand) < 0)
+              tmpBrands.push(prod.brand)
+          })
+
+          setBrands(tmpBrands);
+
+          if (data.page !== page) {
+            setPage(data.page);
+          }
+
+          if (!data?.next_page) {
+            setLoadMore(false);
+          }
+
+          setTimeout(function () {
+            setLoading(false)
+          }, 1000)
+
         })
+        .catch(err => alert(err))
+        // come back and handle this properly with an error message
+    }
 
-        setBrands(tmpBrands);
+  }, [page, session.status])
 
-        if (data.page !== page) {
-          setPage(data.page);
-        }
-
-        if (!data?.next_page) {
-          setLoadMore(false);
-        }
-
+  useEffect(() => {
+    if (session.status === 'authenticated') {
+      setTimeout(function () {
         setLoading(false)
+      }, 1000)
 
-      })
-      // .catch(err => navigateToLogin())
-
-  }, [page])
+    }
+  }, [session.status])
 
   const renderProducts = () => {
     return products
       .filter(product => product.price <= range)
       .filter(product => brand === BRAND ? true : product.brand === brand)
       .map(product => (
-        <Link href={`/product/${product._id}`}>
+        <Link href={`/products/${product._id}`}>
           <Card
             key={product._id}
             title={product.name}
@@ -148,6 +156,9 @@ const Products: FC = () => {
 
   return (
     <>
+
+      <LoadingCover active={loading} />
+
       <Header />
       <div className="container m-auto px-3 md:px-0 py-5">
 
@@ -225,6 +236,7 @@ const Products: FC = () => {
         }
 
       </div>
+
     </>
   )
 }

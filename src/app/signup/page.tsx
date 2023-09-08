@@ -7,7 +7,6 @@ const Register: FC = () => {
     async function create(formData: any) {
         'use server'
 
-        console.log("Hello: " + Object.keys(formData));
     }
 
     return (

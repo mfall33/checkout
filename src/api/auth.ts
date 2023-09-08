@@ -14,6 +14,7 @@ export const login = ({ email, password }: LoginProps) => {
 
     return fetch(`${BASE_URL}/login`,
         {
+            credentials: 'include',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -23,7 +24,7 @@ export const login = ({ email, password }: LoginProps) => {
                 password: password
             }),
         })
-        .then((res) => res.json())
+        .then(res => res.json())
 
 }
 

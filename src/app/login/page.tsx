@@ -5,6 +5,8 @@ import { FC, useState, ChangeEvent } from "react";
 
 import { Button } from "@/components";
 import { useRouter } from "next/navigation";
+import { signIn } from 'next-auth/react';
+
 
 const Login: FC = () => {
 
@@ -13,23 +15,24 @@ const Login: FC = () => {
 
     const { push } = useRouter();
 
-    const loginPress = async () => {
+    const onSubmit = () => {
 
-        try {
-            
-            await fetch('/api/auth/login', {
-                method: 'POST',
-                body: JSON.stringify({ email: email, password: password })
+        signIn('credentials', {
+            redirect: false,
+            email: email,
+            password: password,
+            callbackUrl: `${window.location.origin}/products`,
+        })
+            .then(data => {
+
+                if (data.error)
+                    throw new Error(data.error)
+
+                push(data.url);
+
             })
+            .catch(err => alert("Error: " + JSON.stringify(err.message)));
 
-            console.log(33);
-
-            push("/products");
-
-        } catch (e) {
-
-            alert("Error!");
-        }
     }
 
     const emailChangeHandler = (val: ChangeEvent<HTMLInputElement>) => {
@@ -56,6 +59,7 @@ const Login: FC = () => {
                             name="username"
                             placeholder="Username/Email"
                         />
+
                         <input
                             value={password}
                             onChange={passwordChangeHandler}
@@ -68,7 +72,7 @@ const Login: FC = () => {
                         <Button
                             title="Login"
                             color="yellow"
-                            onClick={loginPress}
+                            onClick={onSubmit}
                         />
 
                         <p className="font-mono mt-5 text-xs text-center">Not a User? <Link className="font-semibold" href="/signup">Sign Up</Link></p>

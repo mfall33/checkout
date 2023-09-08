@@ -3,7 +3,7 @@ import React from 'react';
 type ButtonProps = {
     title: string,
     color: string,
-    type: string,
+    type?: string,
     onClick?: () => void,
 }
 

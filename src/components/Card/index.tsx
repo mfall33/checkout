@@ -1,11 +1,11 @@
 import React from "react";
 import Image from 'next/image';
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
-import { Button } from "..";
+
+import { BlurImage, Button } from "..";
 
 interface CardProps {
     title: string,
-    image: string | StaticImport,
+    image: string,
     text1: string | number,
     text2?: string | number,
     quantity?: number
@@ -19,7 +19,12 @@ const Card: React.FC<CardProps> = ({ title, image, text1, text2 }) => {
                 <h1 className="text-xl font-mono">{title}</h1>
             </div>
             <div className="card-img-cont">
-                <Image style={{ width: '100%' }} src={image} alt="Heart" width="300" height="300" />
+                <BlurImage
+                    src={image}
+                    alt="Heart"
+                    width={300}
+                    height={300}
+                />
                 <Image className="card-like" src="/assets/Heart-Empty.png" alt="Heart" width="25" height="25" />
             </div>
             <div className="card-price-cont">

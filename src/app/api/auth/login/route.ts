@@ -13,6 +13,7 @@ export async function POST(request: NextRequest) {
 
     try {
 
+        // send off login request
         const data = await login({ email, password });
 
         const cookieObj = {
@@ -29,11 +30,11 @@ export async function POST(request: NextRequest) {
                 sameSite: "strict",
                 path: "/",
             }
-        )
+        );
 
         const response = {
             message: 'Authenticated!'
-        }
+        };
 
         return NextResponse.json({ message: response }, {
             status: 200,
