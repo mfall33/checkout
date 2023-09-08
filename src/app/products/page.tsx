@@ -9,10 +9,13 @@ import { IProduct } from "@/models";
 import { getProducts } from "@/api/products";
 import { Card, Dropdown, Header, LoadMore, LoadingCover } from "@/components"
 import { BRAND, FILTER_OPTIONS, PRICE_RANGE, SORT_BY, SORT_OPTIONS } from "@/constants";
+import useStore, { StoreState } from "@/store";
 
 const Products: FC = () => {
 
   const session = useSession();
+
+  const { addToCart } = useStore<StoreState>((state) => state);
 
   const [page, setPage] = useState<Number>(0);
   const [loading, setLoading] = useState<Boolean>(true);
@@ -122,7 +125,7 @@ const Products: FC = () => {
 
         })
         .catch(err => alert(err))
-        // come back and handle this properly with an error message
+      // come back and handle this properly with an error message
     }
 
   }, [page, session.status])
@@ -141,16 +144,17 @@ const Products: FC = () => {
       .filter(product => product.price <= range)
       .filter(product => brand === BRAND ? true : product.brand === brand)
       .map(product => (
-        <Link href={`/products/${product._id}`}>
           <Card
+            href={`/products/${product._id}`}
             key={product._id}
             title={product.name}
             image="/assets/Model.webp"
             text1={'£' + product.price}
             text2={product.brand}
             quantity={0}
+            cardBtn1Text="Add to Basket"
+            cardBtn1Click={() => addToCart(product)}
           />
-        </Link >
       ));
   };
 

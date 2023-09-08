@@ -9,10 +9,14 @@ import Product from "@/models/Product";
 import { getProduct } from "@/api/products";
 import { Header, Button, LoadingCover, BlurImage } from "@/components";
 
+import useStore, { StoreState } from '@/store';
+
 const Product: FC = () => {
 
     const session = useSession();
     const { id } = useParams();
+
+    const { addToCart, cart } = useStore<StoreState>((state) => state);
 
     const [product, setProduct] = useState<Product>({});
     const [loading, setLoading] = useState<Boolean>(true);
@@ -32,7 +36,7 @@ const Product: FC = () => {
 
                 })
                 .catch(err => alert(err))
-                // come back and handle this properly with an error message
+            // come back and handle this properly with an error message
 
         }
 
@@ -62,8 +66,16 @@ const Product: FC = () => {
                             <p className="font-mono italic font-semibold">{product.brand}</p>
 
                             <div className="grid grid-cols-2 gap-2 mt-3">
-                                <Button title={"Buy Now"} color={"yellow"} />
-                                <Button title={"Add to Basket"} color={"lavender"} />
+                                <Button
+                                    title={"Buy Now"}
+                                    color={"yellow"}
+                                />
+
+                                <Button
+                                    title={"Add to Basket"}
+                                    color={"lavender"}
+                                    onClick={() => addToCart(product)}
+                                />
                             </div>
 
                         </div>

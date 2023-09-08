@@ -1,0 +1,17 @@
+.cart-items {
+    display: flex;
+    position: relative;
+    cursor: pointer;
+}
+
+.cart-items-amount {
+    margin-left: 5px;
+    background: $yellow;
+    opacity: 0.8;
+    border-radius: 10px;
+    padding: 0px 4px;
+    border-top: 1px solid $black;
+    border-bottom: 1px solid $black;
+    border-left: 1px solid $black;
+    border-right: 1px solid $black;
+}

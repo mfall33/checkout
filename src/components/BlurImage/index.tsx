@@ -2,6 +2,8 @@
 import Image from "next/image";
 import { useState } from "react";
 
+import { cn } from "@/utils";
+
 type Image = {
     src: string,
     width: number,
@@ -10,11 +12,8 @@ type Image = {
 }
 
 export default function BlurImage({ src, width, height, alt }: Image) {
+    
     const [isLoading, setLoading] = useState(true);
-
-    function cn(...classes: string[]) {
-        return classes.filter(Boolean).join(' ')
-    }
 
     return (
         <a className="group">

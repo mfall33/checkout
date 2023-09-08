@@ -38,14 +38,6 @@
     color: $yellow;
 }
 
-.cart-items-amount {
-    margin-left: 5px;
-    background: $yellow;
-    opacity: 0.8;
-    border-radius: 10px;
-    padding: 0px 4px;
-}
-
 .card {
     padding: 10px;
     border: 1px solid $lavender;
@@ -95,12 +87,22 @@
         height: 0;
         position: absolute;
         min-width: 300px;
+        max-height: 300px;
         top: 100%;
-        overflow: hidden;
+        overflow-x: hidden;
+        overflow-y: scroll;
         background: $lavender;
         padding: 0;
         border-end-start-radius: 10px;
         border-end-end-radius: 10px;
+    }
+}
+
+.dropdown:hover {
+
+    .dropdown-content {
+        height: auto;
+        padding: 1rem;
     }
 }
 
@@ -115,15 +117,6 @@
     .dropdown-content {
         border-top-right-radius: 10px;
         left: 0;
-    }
-}
-
-.dropdown:hover {
-    .dropdown-trigger {}
-
-    .dropdown-content {
-        height: auto;
-        padding: 1rem;
     }
 }
 
@@ -168,6 +161,23 @@
         border-right: 5px solid $yellow;
         border-top: 5px solid $black;
         border-bottom: 5px solid $black;
+    }
+}
+
+.hide-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+
+    &::-webkit-scrollbar {
+        width: 1px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: transparent;
     }
 }
 

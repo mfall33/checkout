@@ -18,3 +18,7 @@ export const authedFetch = ({ url, method, headers = {}, body, nextParams }: Fet
         body: body
     })
 }
+
+export const cn = (...classes: string[]) => {
+    return classes.filter(Boolean).join(' ')
+}
