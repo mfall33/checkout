@@ -23,6 +23,7 @@ export default function BlurImage({ src, width, height, alt }: Image) {
                     alt={alt}
                     src={src}
                     objectFit="cover"
+                    // style={{ width: '100%' }}
                     width={width}
                     height={height}
                     className={cn(

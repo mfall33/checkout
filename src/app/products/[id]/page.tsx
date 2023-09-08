@@ -1,13 +1,13 @@
 
 "use client";
 
-import { FC, useEffect, useState } from "react";
 import { useParams } from 'next/navigation';
+import { useSession } from "next-auth/react";
+import { FC, useEffect, useState } from "react";
 
+import Product from "@/models/Product";
 import { getProduct } from "@/api/products";
 import { Header, Button, LoadingCover, BlurImage } from "@/components";
-import { useSession } from "next-auth/react";
-import Product from "@/models/Product";
 
 const Product: FC = () => {
 
@@ -46,8 +46,8 @@ const Product: FC = () => {
             <Header />
             <div className="container m-auto px-3 md:px-0 py-5">
                 {!loading &&
-                    <div className="grid grid-cols-2">
-                        <div className="flex justify-center">
+                    <div className="grid grid-cols-1 sm:grid-cols-2">
+                        <div className="flex justify-center pr-0 sm:px-5">
                             <BlurImage
                                 src="/assets/model.webp"
                                 alt="Heart"
@@ -57,7 +57,7 @@ const Product: FC = () => {
                         </div>
                         <div className="flex flex-col align-items justify-center">
 
-                            <h2 className="font-mono font-semibold text-lg">{product.name} - (£{product.price})</h2>
+                            <h2 className="font-mono font-semibold text-lg mt-3 md:mt-0">{product.name} - (£{product.price})</h2>
                             <p className="font-mono my-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto eos odit molestiae, temporibus ducimus at ea magni ipsa eius eum laudantium earum nostrum similique dicta inventore! Maiores aspernatur voluptates quam.</p>
                             <p className="font-mono italic font-semibold">{product.brand}</p>
 
