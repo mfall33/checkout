@@ -1,12 +1,14 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import useStore, { StoreState } from "@/store";
+
 import { Button } from "..";
+import useStore from "@/store/useStore";
+import { useProductsStore } from "@/store";
 
 const Header: React.FC = () => {
 
-    const { cart, wishList } = useStore<StoreState>((state) => state);
+    const productStore = useStore(useProductsStore, (state => state));
 
     return (
         <header className="bg-lavender">
@@ -17,15 +19,15 @@ const Header: React.FC = () => {
                 <div className="cart-items">
                     <Link href="/wishlist" className="mr-4 border-r-2 border-black pr-4 flex flex-row">
                         <Image className="cart" src="/assets/heart-full.png" alt="Cart" width="25" height="25" />
-                        <span className="cart-items-amount">{wishList.length}</span>
+                        <span className={`cart-items-amount ${!productStore ? 'text-yellow' : ''}`}>{productStore && productStore.wishList.length || 0}</span>
                     </Link>
                     <div className="flex dropdown left">
                         <Image className="cart" src="/assets/cart.png" alt="Cart" width="25" height="25" />
-                        <span className="cart-items-amount">{cart.length}</span>
-                        {!!cart.length &&
+                        <span className={`cart-items-amount ${!productStore ? 'text-yellow' : ''}`}>{productStore && productStore.cart.length || 0}</span>
+                        {productStore && !!productStore.cart.length &&
                             <div className="dropdown-content hide-scrollbar">
                                 <ul>
-                                    {cart.map((item, index) =>
+                                    {productStore.cart.map((item, index) =>
                                         <li
                                             key={index}
                                             className={`transition-all shadow hover:shadow-lg p-3 bg-white border-black rounded cursor-pointer mt-2`}>

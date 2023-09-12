@@ -10,15 +10,17 @@ import Product from "@/models/Product";
 import { getProducts } from "@/api/products";
 import { Dropdown, Header, LoadMore, LoadingCover, ProductCard } from "@/components"
 import { BRAND, FILTER_OPTIONS, PRICE_RANGE, SORT_BY, SORT_OPTIONS } from "@/constants";
-import useStore, { StoreState } from "@/store";
+import { useProductsStore } from "@/store";
+import useStore from "@/store/useStore";
 
 const Products: FC = () => {
 
   const session = useSession();
 
-  const { addToCart, addToWishList, wishList } = useStore<StoreState>((state) => state);
+  const productStore = useStore(useProductsStore, (state => state));
 
   const [page, setPage] = useState<Number>(0);
+
   const [loading, setLoading] = useState<Boolean>(true);
   const [products, setProducts] = useState<IProduct[]>([]);
   const [loadMore, setLoadMore] = useState<Boolean>(true);
@@ -146,8 +148,8 @@ const Products: FC = () => {
       .filter(product => brand === BRAND ? true : product.brand === brand)
       .map((product: Product) => (
         <ProductCard
-          inWishList={wishList.some(prod => prod._id === product._id)}
-          onHeartClick={() => addToWishList(product)}
+          inWishList={productStore.wishList.some(prod => prod._id === product._id)}
+          onHeartClick={() => productStore.addToWishList(product)}
           href={`/products/${product._id}`}
           key={product._id}
           title={product.name}
@@ -156,7 +158,7 @@ const Products: FC = () => {
           text2={product.brand}
           quantity={0}
           cardBtn1Text="Add to Basket"
-          cardBtn1Click={() => addToCart(product)}
+          cardBtn1Click={() => productStore.addToCart(product)}
         />
       ));
   };
