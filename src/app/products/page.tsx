@@ -6,8 +6,9 @@ import { useSession } from "next-auth/react";
 import React, { useState, FC, useEffect } from "react"
 
 import { IProduct } from "@/models";
+import Product from "@/models/Product";
 import { getProducts } from "@/api/products";
-import { Card, Dropdown, Header, LoadMore, LoadingCover } from "@/components"
+import { Dropdown, Header, LoadMore, LoadingCover, ProductCard } from "@/components"
 import { BRAND, FILTER_OPTIONS, PRICE_RANGE, SORT_BY, SORT_OPTIONS } from "@/constants";
 import useStore, { StoreState } from "@/store";
 
@@ -15,7 +16,7 @@ const Products: FC = () => {
 
   const session = useSession();
 
-  const { addToCart } = useStore<StoreState>((state) => state);
+  const { addToCart, addToWishList, wishList } = useStore<StoreState>((state) => state);
 
   const [page, setPage] = useState<Number>(0);
   const [loading, setLoading] = useState<Boolean>(true);
@@ -30,55 +31,6 @@ const Products: FC = () => {
 
   const [range, setRange] = useState<number>(0);
   const [maxRange, setMaxRange] = useState<number>(0);
-
-  const handleSortClear = () => {
-
-    setSort(SORT_BY);
-    const newProducts = sortProducts(products, '');
-    setProducts(newProducts);
-
-  }
-  const handleBrandClear = () => {
-    setBrand(BRAND)
-  }
-
-  const handlePriceRangeClear = () => {
-    setRange(maxRange)
-  }
-
-  const handleRangeChange = (e: Object) => {
-    setRange(e.target.value);
-  }
-
-  const handleSortSelection = (item: Object) => {
-
-    setSort(item.name)
-    setSortBy(item.key)
-    const newProds = sortProducts(products, item.key);
-    setProducts(newProds);
-
-  }
-
-  const handleBrandSelection = (item: string) => {
-    setBrand(item)
-  }
-
-  const sortProducts = (products: IProduct[], sorter: string) => {
-
-    switch (sorter) {
-      case 'price-low-high':
-        products = products.sort((a, b) => a.price - b.price);
-        break;
-      case 'price-high-low':
-        products = products.sort((a, b) => b.price - a.price);
-        break;
-      default:
-        products = _.sortBy(products, 'name');
-        break;
-    }
-
-    return products;
-  }
 
   useEffect(() => {
 
@@ -139,22 +91,73 @@ const Products: FC = () => {
     }
   }, [session.status])
 
+  const handleSortClear = () => {
+
+    setSort(SORT_BY);
+    const newProducts = sortProducts(products, '');
+    setProducts(newProducts);
+
+  }
+  const handleBrandClear = () => {
+    setBrand(BRAND)
+  }
+
+  const handlePriceRangeClear = () => {
+    setRange(maxRange)
+  }
+
+  const handleRangeChange = (e: Object) => {
+    setRange(e.target.value);
+  }
+
+  const handleSortSelection = (item: Object) => {
+
+    setSort(item.name)
+    setSortBy(item.key)
+    const newProds = sortProducts(products, item.key);
+    setProducts(newProds);
+
+  }
+
+  const handleBrandSelection = (item: string) => {
+    setBrand(item)
+  }
+
+  const sortProducts = (products: IProduct[], sorter: string) => {
+
+    switch (sorter) {
+      case 'price-low-high':
+        products = products.sort((a, b) => a.price - b.price);
+        break;
+      case 'price-high-low':
+        products = products.sort((a, b) => b.price - a.price);
+        break;
+      default:
+        products = _.sortBy(products, 'name');
+        break;
+    }
+
+    return products;
+  }
+
   const renderProducts = () => {
     return products
       .filter(product => product.price <= range)
       .filter(product => brand === BRAND ? true : product.brand === brand)
-      .map(product => (
-          <Card
-            href={`/products/${product._id}`}
-            key={product._id}
-            title={product.name}
-            image="/assets/Model.webp"
-            text1={'£' + product.price}
-            text2={product.brand}
-            quantity={0}
-            cardBtn1Text="Add to Basket"
-            cardBtn1Click={() => addToCart(product)}
-          />
+      .map((product: Product) => (
+        <ProductCard
+          inWishList={wishList.some(prod => prod._id === product._id)}
+          onHeartClick={() => addToWishList(product)}
+          href={`/products/${product._id}`}
+          key={product._id}
+          title={product.name}
+          image="/assets/Model.webp"
+          text1={'£' + product.price}
+          text2={product.brand}
+          quantity={0}
+          cardBtn1Text="Add to Basket"
+          cardBtn1Click={() => addToCart(product)}
+        />
       ));
   };
 

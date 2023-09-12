@@ -16,7 +16,7 @@ const Product: FC = () => {
     const session = useSession();
     const { id } = useParams();
 
-    const { addToCart, cart } = useStore<StoreState>((state) => state);
+    const { addToCart } = useStore<StoreState>((state) => state);
 
     const [product, setProduct] = useState<Product>({});
     const [loading, setLoading] = useState<Boolean>(true);

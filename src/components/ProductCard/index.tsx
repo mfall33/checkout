@@ -10,23 +10,27 @@ interface CardProps {
     text1: string | number,
     text2?: string | number,
     quantity?: number,
+    inWishList?: boolean,
     cardBtn1Text?: string,
     cardBtn1Click?: () => void,
     cardBtn2Text?: string,
     cardBtn2Click?: () => void,
-    href?: string
+    href?: string,
+    onHeartClick?: (arg: any) => void
 }
 
-const Card: React.FC<CardProps> = ({
+const ProductCard: React.FC<CardProps> = ({
     title,
     image,
     text1,
     text2,
+    inWishList = false,
     cardBtn1Text,
     cardBtn1Click,
     cardBtn2Text,
     cardBtn2Click,
-    href = ''
+    href = '',
+    onHeartClick
 }) => {
 
     return (
@@ -34,7 +38,7 @@ const Card: React.FC<CardProps> = ({
             <div className="card-title-cont">
                 <h1 className="text-xl font-mono">{title}</h1>
             </div>
-            <Link href={href}>
+            {/* <Link href={href}> */}
                 <div className="card-img-cont">
                     <BlurImage
                         src={image}
@@ -42,9 +46,16 @@ const Card: React.FC<CardProps> = ({
                         width={300}
                         height={300}
                     />
-                    <Image className="card-like" src="/assets/Heart-Empty.png" alt="Heart" width="25" height="25" />
+                    <Image
+                        onClick={onHeartClick}
+                        className="card-like"
+                        src={`/assets/Heart-${inWishList ? 'Full' : 'Empty'}.png`}
+                        alt="Heart"
+                        width="25"
+                        height="25"
+                    />
                 </div>
-            </Link>
+            {/* </Link> */}
             <div className="card-price-cont">
                 <p className="font-mono">{text1}</p>
                 {text2 &&
@@ -73,4 +84,4 @@ const Card: React.FC<CardProps> = ({
 
 }
 
-export default Card;
+export default ProductCard;
