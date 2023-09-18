@@ -55,6 +55,8 @@ export const useProductsStore = create(
                 const existingIndex = wishList.findIndex(item => item._id === product._id);
 
                 if (existingIndex < 0) {
+                    
+                    // add to wishlist
 
                     const newWishList = [...wishList, product];
 
@@ -62,6 +64,7 @@ export const useProductsStore = create(
 
                 } else {
 
+                    // remove from wishlist
                     // [el0, el1, el2, EL_TO_REMOVE, el4, el5, el6]
                     // SPLIT THE ABOVE IN TWO ARRAYS BEFORE AND AFTER THE REMOVAL INDEX
                     // THEN MERGE: [...[el0, el1, el2], ...[el4, el5, el6]]

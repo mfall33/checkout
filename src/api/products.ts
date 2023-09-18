@@ -1,8 +1,7 @@
 import { authedFetch } from '@/utils';
 import { FETCH_CONFIG } from '../config';
 
-export const getProducts = async (page, token) => {
-
+export const getProducts = async (page: Number, token: String) => {
 
     return authedFetch({
         url: `/products?page=${page}`,

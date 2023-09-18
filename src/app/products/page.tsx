@@ -1,17 +1,16 @@
 'use client';
 
 import _ from "underscore";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
-import React, { useState, FC, useEffect } from "react"
+import React, { useState, FC, useEffect } from "react";
 
 import { IProduct } from "@/models";
 import Product from "@/models/Product";
+import useStore from "@/store/useStore";
+import { useProductsStore } from "@/store";
 import { getProducts } from "@/api/products";
 import { Dropdown, Header, LoadMore, LoadingCover, ProductCard } from "@/components"
 import { BRAND, FILTER_OPTIONS, PRICE_RANGE, SORT_BY, SORT_OPTIONS } from "@/constants";
-import { useProductsStore } from "@/store";
-import useStore from "@/store/useStore";
 
 const Products: FC = () => {
 
