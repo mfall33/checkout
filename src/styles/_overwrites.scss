@@ -12,3 +12,11 @@ input[type=number] {
 input[type=range] {
   accent-color: $yellow;
 }
+
+header {
+  .dropdown {
+    .dropdown-content {
+      border-bottom: 2px solid $lavender;
+    }
+  }
+}

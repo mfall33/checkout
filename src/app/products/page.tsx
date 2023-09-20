@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import React, { useState, FC, useEffect } from "react";
 
 import { IProduct } from "@/models";
-import Product from "@/models/Product";
+import { addToCart, getCart } from "@/api/cart";
 import useStore from "@/store/useStore";
 import { useProductsStore } from "@/store";
 import { getProducts } from "@/api/products";
@@ -37,7 +37,13 @@ const Products: FC = () => {
 
     if (session.status !== 'loading') {
 
-      getProducts(page, session.data?.user.access_token)
+      const token = session.data?.user.access_token;
+
+      getCart(token)
+        .then(productStore?.setCart)
+        .catch(err => console.log("Err: " + err))
+
+      getProducts(page, token)
         .then((data) => {
 
           // initialize array
@@ -124,6 +130,26 @@ const Products: FC = () => {
     setBrand(item)
   }
 
+  const addProductToCart = async (product: IProduct) => {
+
+    try {
+
+      const token = session.data?.user.access_token;
+
+      await addToCart(token, product._id);
+
+      const cart = await getCart(token);
+
+      productStore?.setCart(cart);
+
+    } catch (e) {
+
+      alert(e.message)
+
+    }
+
+  }
+
   const sortProducts = (products: IProduct[], sorter: string) => {
 
     switch (sorter) {
@@ -145,9 +171,10 @@ const Products: FC = () => {
     return products
       .filter(product => product.price <= range)
       .filter(product => brand === BRAND ? true : product.brand === brand)
-      .map((product: Product) => (
+      .map((product: IProduct) => (
         <ProductCard
-          inWishList={productStore.wishList.some(prod => prod._id === product._id)}
+          inWishList={productStore.wishList.some(prod => prod?._id === product._id)}
+          // inWishList={false}
           onHeartClick={() => productStore.addToWishList(product)}
           href={`/products/${product._id}`}
           key={product._id}
@@ -157,7 +184,7 @@ const Products: FC = () => {
           text2={product.brand}
           quantity={0}
           cardBtn1Text="Add to Basket"
-          cardBtn1Click={() => productStore.addToCart(product)}
+          cardBtn1Click={() => addProductToCart(product)}
         />
       ));
   };
@@ -176,6 +203,7 @@ const Products: FC = () => {
             <h1 className="font-mono text-2xl mb-2">Shop til you drop!</h1>
             <p className="font-mono text-sm font-light">Indulge in a shopping extravaganza with our 'Shop til you drop!' collection on our ecommerce website. Discover a treasure trove of irresistible deals, trendy fashion, cutting-edge electronics, and more. Unleash your inner shopaholic and explore a world of limitless choices. Whether you're seeking the latest fashion statements or tech innovations, our curated selection ensures you'll find everything you desire. Get ready to shop with abandon and treat yourself to a truly unforgettable retail therapy experience!</p>
           </div>
+
 
           <div className="flex items-center">
 
@@ -243,7 +271,7 @@ const Products: FC = () => {
           <LoadMore onClick={() => setPage(+page + 1)} />
         }
 
-      </div>
+      </div >
 
     </>
   )

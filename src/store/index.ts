@@ -1,62 +1,36 @@
 import { create } from 'zustand';
-import Product from '@/models/Product';
 import { persist } from 'zustand/middleware';
+import { ICart, ICartProduct, IProduct } from '@/models';
 
 export type StoreState = {
-    cart: CartProduct[],
-    wishList: Product[],
-    addToCart: (product: Product) => void,
-    addToWishList: (product: Product) => void,
+    cart: ICart,
+    wishList: IProduct[],
+    setCart: (cart: ICart) => void,
+    addToWishList: (product: IProduct) => void,
 };
 
-type CartProduct = {
-    product: Product,
-    quantity: number
-}
+const initCartState = {
+    products: [],
+    total: 0
+};
 
 export const useProductsStore = create(
     persist(
         (set, get) => ({
-            cart: [],
+            cart: initCartState,
             wishList: [],
-            addToCart: (product: Product) => set((state: StoreState) => {
+            setCart: (cart: ICart) => set((state: StoreState) => {
 
-                let cart = state.cart;
-
-                const existingIndex = cart.findIndex(item => item.product._id === product._id);
-
-                if (existingIndex < 0) {
-
-                    const updatedCart = [
-                        ...cart,
-                        {
-                            product: product,
-                            quantity: 1
-                        }
-                    ]
-
-                    return { ...state, cart: updatedCart }
-
-                } else {
-
-                    const updatedCart = [...cart];
-
-                    updatedCart[existingIndex].quantity += 1;
-
-                    return { ...state, cart: updatedCart };
-
-                }
+                return { ...state, cart: cart };
 
             }),
-            addToWishList: (product: Product) => set((state: StoreState) => {
+            addToWishList: (product: IProduct) => set((state: StoreState) => {
 
                 let wishList = state.wishList;
 
                 const existingIndex = wishList.findIndex(item => item._id === product._id);
 
                 if (existingIndex < 0) {
-                    
-                    // add to wishlist
 
                     const newWishList = [...wishList, product];
 
@@ -78,7 +52,7 @@ export const useProductsStore = create(
             })
         }),
         {
-            // ...
+            // paritalize: only storing the selected properties below
             partialize: (state: StoreState) => ({ wishList: state.wishList }),
             name: 'checkout-storage'
         }

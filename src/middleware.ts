@@ -16,8 +16,6 @@ export async function middleware(req: NextRequest) {
             process.env.APP_SECRET_KEY
         );
 
-        console.log("fired");
-
         await jwtVerify(token.access_token, secret);
 
     } catch (e) {
@@ -30,5 +28,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/products/:path*'],
+    matcher: ['/products/:path*', '/cart'],
 };

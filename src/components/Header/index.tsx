@@ -2,7 +2,6 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { Button } from "..";
 import useStore from "@/store/useStore";
 import { useProductsStore } from "@/store";
 
@@ -22,12 +21,16 @@ const Header: React.FC = () => {
                         <span className={`cart-items-amount ${!productStore ? 'text-yellow' : ''}`}>{productStore && productStore.wishList.length || 0}</span>
                     </Link>
                     <div className="flex dropdown left">
-                        <Image className="cart" src="/assets/cart.png" alt="Cart" width="25" height="25" />
-                        <span className={`cart-items-amount ${!productStore ? 'text-yellow' : ''}`}>{productStore && productStore.cart.length || 0}</span>
-                        {productStore && !!productStore.cart.length &&
+                        <Link className="flex" href="/cart">
+                            <Image className="cart" src="/assets/cart.png" alt="Cart" width="25" height="25" />
+                            <span className={`cart-items-amount ${!productStore ? 'text-yellow' : ''}`}>{productStore && productStore.cart.products?.length || 0}</span>
+                        </Link>
+                        {productStore && !!productStore.cart?.products?.length &&
                             <div className="dropdown-content hide-scrollbar">
+
+                                <h3 className="font-mono font-semibold text-lg">Cart</h3>
                                 <ul>
-                                    {productStore.cart.map((item, index) =>
+                                    {productStore.cart?.products?.map((item, index) =>
                                         <li
                                             key={index}
                                             className={`transition-all shadow hover:shadow-lg p-3 bg-white border-black rounded cursor-pointer mt-2`}>
@@ -35,12 +38,6 @@ const Header: React.FC = () => {
                                         </li>
                                     )}
                                 </ul>
-
-                                <Button
-                                    classes="mt-2"
-                                    title="Proceed to CheckOut"
-                                    color="yellow"
-                                />
                             </div>
                         }
                     </div>

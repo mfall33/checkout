@@ -1,5 +1,5 @@
 import { BASE_URL } from "@/config";
-import useStore from "@/store";
+import Stripe from 'stripe';
 
 type FetchProps = {
     url: string,
@@ -9,9 +9,9 @@ type FetchProps = {
     nextParams?: object
 }
 
-export const authedFetch = ({ url, method, headers = {}, body, nextParams }: FetchProps) => {
+export const authedFetch = async ({ url, method, headers = {}, body, nextParams }: FetchProps) => {
 
-    return fetch(BASE_URL + url, {
+    return await fetch(BASE_URL + url, {
         next: nextParams,
         method: method,
         headers: headers,
@@ -22,3 +22,9 @@ export const authedFetch = ({ url, method, headers = {}, body, nextParams }: Fet
 export const cn = (...classes: string[]) => {
     return classes.filter(Boolean).join(' ')
 }
+
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+    maxNetworkRetries: 1,
+    timeout: 1000,
+    apiVersion: '2023-08-16',
+});
