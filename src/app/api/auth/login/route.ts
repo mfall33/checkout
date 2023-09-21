@@ -3,7 +3,6 @@ import { NextResponse, NextRequest } from "next/server";
 import { login } from "@/api/auth";
 import { COOKIE_NAME } from "@/constants";
 
-
 // To handle a GET request to /api
 export async function POST(request: NextRequest) {
 

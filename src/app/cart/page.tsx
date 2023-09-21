@@ -3,17 +3,18 @@
 import { useSession } from "next-auth/react";
 import { FC, useEffect, useState } from "react";
 
+import { stripe } from "@/utils";
 import { getCart } from "@/api/cart";
 import useStore from "@/store/useStore";
 import { useProductsStore } from "@/store";
-import { BlurImage, Button, Header, LoadingCover } from "@/components";
-import { stripe } from "@/utils";
-
+import { Button, CartItem, Header, LoadingCover, PaymentMethod } from "@/components";
+import Link from "next/link";
 
 const Checkout: FC = () => {
 
     const session = useSession();
     const [paymentMethods, setPaymentMethods] = useState([]);
+    const [paymentMethod, setPaymentMethod] = useState(null);
     const [loading, setLoading] = useState<Boolean>(true);
 
     const productStore = useStore(useProductsStore, (state => state));
@@ -30,10 +31,12 @@ const Checkout: FC = () => {
 
             stripe.customers.listPaymentMethods(session.data?.user.stripe_customer_id)
                 .then(response => {
+                    console.log("Response: " + JSON.stringify(response));
+
                     setPaymentMethods(response.data);
                     setLoading(false);
                 })
-                .catch(err => alert(JSON.stringify(err.messge)));
+                .catch(err => console.log(JSON.stringify(err.messge)));
 
 
         }
@@ -45,42 +48,50 @@ const Checkout: FC = () => {
         <LoadingCover active={loading} />
 
         <Header />
-        <div className="container m-auto p-3 flex flex-wrap">
-            <h1 className="text-3xl font-mono w-full">Checkout</h1>
+        <div className="container m-auto py-8 flex flex-wrap">
 
 
             {!loading && productStore &&
                 <>
+                    <h3 className="text-xl font-mono font-semibold w-full">Your Items ({productStore?.cart?.products.length})</h3>
+
                     <div className="grid grid-cols-12 gap-4 w-full mt-3">
 
                         <div className="checkout-items col-span-9">
-                            {productStore?.cart?.products?.map(cartProduct => {
-                                return <div className="checkout-cart-item">
-                                    <div className="pr-0 md:pr-3">
-                                        <BlurImage
-                                            src="/assets/model.webp"
-                                            alt="Model"
-                                            width={130}
-                                            height={130}
-
-                                        />
-                                    </div>
-                                    <div>
-                                        <h3 className="text-lg font-semibold font-mono">{cartProduct.product.name}</h3>
-                                        <p className="font-mono">£{cartProduct.product.price}</p>
-                                        <p className="font-semibold font-mono">{cartProduct.product.brand}</p>
-                                        <p className="font-mono"><b>Quantity:</b> {cartProduct.quantity}</p>
-                                    </div>
-                                </div>
-                            })}
+                            {productStore?.cart?.products?.map(cartProduct =>
+                                <CartItem
+                                    name={cartProduct.product.name}
+                                    price={cartProduct.product.price}
+                                    quantity={cartProduct.quantity}
+                                    brand={cartProduct.product.brand}
+                                />
+                            )}
 
                             <div className="cart-payment-methods">
 
-                                {paymentMethods.length <= 0 &&
+                                <div>
+                                    <h3 className="text-xl font-mono mb-3 w-full"><b>Payment Methods</b> {!paymentMethod && <i>(Select a Method)</i>}</h3>
 
-                                    <p>Add some payment methods!</p>
+                                    {paymentMethods.length > 0 && paymentMethods.map(method =>
+                                        <PaymentMethod
+                                            selected={method.id === paymentMethod}
+                                            brand={method.card.brand}
+                                            expMonth={method.card.exp_month}
+                                            expYear={method.card.exp_year}
+                                            country={method.card.country}
+                                            last4={method.card.last4}
+                                            onClick={() => setPaymentMethod(method.id)}
+                                        />
+                                    )}
+                                </div>
 
-                                }
+                                <Link href="/payment-method">
+                                    <Button
+                                        title="Add new Payment Method +"
+                                        color="yellow"
+                                        classes="font-semibold"
+                                    />
+                                </Link>
 
                             </div>
 
@@ -97,8 +108,8 @@ const Checkout: FC = () => {
                                     title="Proceed to Payment"
                                     color="yellow"
                                     classes="mt-5"
-                                    disabled={true}
-                                    onClick={() => alert(33)}
+                                    disabled={!paymentMethod}
+                                    // onClick={() => alert(33)}
                                 />
                             </>
                         </aside>

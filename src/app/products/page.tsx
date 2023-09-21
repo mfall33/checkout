@@ -83,7 +83,7 @@ const Products: FC = () => {
           }, 1000)
 
         })
-        .catch(err => alert(err))
+        .catch(err => console.log(err))
       // come back and handle this properly with an error message
     }
 
@@ -144,7 +144,7 @@ const Products: FC = () => {
 
     } catch (e) {
 
-      alert(e.message)
+      console.log(e.message)
 
     }
 

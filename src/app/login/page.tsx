@@ -31,7 +31,7 @@ const Login: FC = () => {
                 push(data.url);
 
             })
-            .catch(err => alert("Error: " + JSON.stringify(err.message)));
+            .catch(err => console.log("Error: " + JSON.stringify(err.message)));
 
     }
 

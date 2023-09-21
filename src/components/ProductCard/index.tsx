@@ -1,8 +1,7 @@
-import React from "react";
+import {FC} from "react";
 import Image from 'next/image';
 
 import { BlurImage, Button } from "..";
-import Link from "next/link";
 
 interface CardProps {
     title: string,
@@ -19,7 +18,7 @@ interface CardProps {
     onHeartClick?: (arg: any) => void
 }
 
-const ProductCard: React.FC<CardProps> = ({
+const ProductCard: FC<CardProps> = ({
     title,
     image,
     text1,

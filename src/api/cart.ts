@@ -1,6 +1,5 @@
 import { authedFetch } from '@/utils';
 import { BASE_URL } from '../config';
-import { ICartProduct } from '@/models';
 
 export const getCart = async (token: String) => {
 
