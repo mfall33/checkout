@@ -31,7 +31,7 @@ const PaymentForm = () => {
                 }
             })
 
-            const response = await axios.post("/api/create-payment-intent", {
+            const response = await axios.post("/api/attach-payment-method", {
                 body: {
                     paymentMethodId: paymentMethod.id,
                     user: session.data?.user

@@ -39,8 +39,6 @@ export const addToCart = async (token: String, productId: String) => {
         .then(res => res.json())
         .then(data => {
 
-            console.log("DATA: " + JSON.stringify(data))
-
             if (data.message) {
                 throw Error(data.message);
             }

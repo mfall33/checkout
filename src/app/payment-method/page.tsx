@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { loadStripe } from "@stripe/stripe-js";
 import { FC, useEffect, useState } from "react";
 import { Elements } from "@stripe/react-stripe-js";
+import cookie from 'cookie';
 
 import { Header, LoadingCover, PaymentForm } from "@/components";
 
@@ -46,7 +47,7 @@ const Checkout: FC = () => {
 
                         <div className="checkout-items col-span-6">
 
-                            <div className="cart-payment-methods">                        
+                            <div className="cart-payment-methods">
 
                                 <Elements stripe={stripePromise}>
                                     <PaymentForm />

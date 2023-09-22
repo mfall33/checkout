@@ -4,41 +4,37 @@ import { NextResponse, NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
 
-    const request = await req.json();
-
     try {
 
-        const { user, paymentMethodId } = request.body;
+        const request = await req.json();
 
-        console.log("paymentMethodId server: " + JSON.stringify(request));
+        const { amount, customer } = request.body;
 
-        const attached = await stripe.paymentMethods.attach(
-            paymentMethodId,
-            { customer: user.stripe_customer_id }
-        );
-
-        console.log("Attached: " + JSON.stringify(attached));
-
-        // const paymentIntent = await stripe.paymentIntents.create({
-        //     amount: Number(request.amount) * 100,
-        //     currency: "GBP",
-        // });
-
-        return NextResponse.json({ success: true }, {
-            status: 200,
-            headers: {
-                'Cache-Control': 'no-store, max-age=0',
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount: Number(amount) * 100,
+            automatic_payment_methods: {
+                enabled: true,
+                allow_redirects: 'never'
             },
+            customer: customer,
+            currency: "GBP",
+        });
+
+        return NextResponse.json({
+            success: true,
+            paymentIntent: paymentIntent
+        }, {
+            status: 200,
         });
 
     } catch (error: any) {
 
-        console.log("PAYMENT INTENT: " + error.message);
+        console.log("Create payment intent: " + error.message)
 
         return NextResponse.json({ success: false }, {
             status: 400,
         });
-    }
-}
 
-export const dynamic = 'force-dynamic';
+    }
+
+}

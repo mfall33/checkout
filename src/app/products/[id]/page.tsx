@@ -16,6 +16,7 @@ const Product: FC = () => {
     const session = useSession();
     const { id } = useParams();
 
+    // replace this with API addToCart
     const { addToCart } = useStore<StoreState>((state) => state);
 
     const [product, setProduct] = useState<Product>({});

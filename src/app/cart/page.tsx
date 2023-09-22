@@ -1,20 +1,27 @@
 "use client";
 
+import axios from "axios";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { FC, useEffect, useState } from "react";
+import { parseCookies, setCookie, destroyCookie } from 'nookies'
 
 import { stripe } from "@/utils";
 import { getCart } from "@/api/cart";
 import useStore from "@/store/useStore";
 import { useProductsStore } from "@/store";
 import { Button, CartItem, Header, LoadingCover, PaymentMethod } from "@/components";
-import Link from "next/link";
 
-const Checkout: FC = () => {
+const Cart: FC = () => {
 
     const session = useSession();
+    const router = useRouter();
+
     const [paymentMethods, setPaymentMethods] = useState([]);
-    const [paymentMethod, setPaymentMethod] = useState(null);
+    const [paymentMethod, setPaymentMethod] = useState<String>("");
+    const [paymentIntent, setPaymentIntent] = useState<String>("");
+    const [paymentProcessing, setPaymentProcessing] = useState<Boolean>(false);
     const [loading, setLoading] = useState<Boolean>(true);
 
     const productStore = useStore(useProductsStore, (state => state));
@@ -31,8 +38,6 @@ const Checkout: FC = () => {
 
             stripe.customers.listPaymentMethods(session.data?.user.stripe_customer_id)
                 .then(response => {
-                    console.log("Response: " + JSON.stringify(response));
-
                     setPaymentMethods(response.data);
                     setLoading(false);
                 })
@@ -42,6 +47,89 @@ const Checkout: FC = () => {
         }
     }, [session.status])
 
+    useEffect(() => {
+
+        // Setting up our payment intent
+
+        if (!loading && !paymentProcessing) {
+
+            const cookies = parseCookies();
+
+            if ('pid' in cookies) {
+
+                setPaymentIntent(cookies.pid);
+
+            } else {
+
+                const response = axios.post("/api/create-payment-intent", {
+                    body: {
+                        amount: productStore?.cart.total,
+                        customer: session.data?.user.stripe_customer_id
+                    },
+                });
+
+                response
+                    .then(res => {
+                        if (res.data.success) {
+
+                            console.log("PaymentIntentId: " + JSON.stringify(res.data))
+
+                            setPaymentIntent(res.data.paymentIntent.id);
+
+                            // test this for max age expiry
+                            setCookie(null, 'pid', res.data.paymentIntent.id, {
+                                maxAge: 30 * 24 * 60 * 60,
+                                path: '/',
+                            });
+
+                        }
+                    })
+                    .catch(err => console.log("error: " + err.message))
+
+            }
+        }
+
+    }, [loading])
+
+    const attemptPayment = async () => {
+
+        setPaymentProcessing(true);
+
+        const response = await axios.post("/api/confirm-payment-intent", {
+            body: {
+                paymentMethod: paymentMethod,
+                paymentIntentId: paymentIntent,
+            },
+        });
+
+        if (response.data.success) {
+
+            destroyCookie(null, 'pid');
+            router.push("/payment-success");
+
+        }
+
+        setPaymentProcessing(false);
+
+    }
+
+    const updatePaymentMethod = async (method: string) => {
+
+        if (paymentIntent) {
+
+            setPaymentMethod(method);
+
+            const response = await axios.post("/api/update-payment-intent", {
+                body: {
+                    paymentMethod: paymentMethod,
+                    paymentIntentId: paymentIntent,
+                },
+            });
+
+            console.log("RESPONSE: " + JSON.stringify(response));
+
+        }
+    }
 
     return (<>
 
@@ -49,7 +137,6 @@ const Checkout: FC = () => {
 
         <Header />
         <div className="container m-auto py-8 flex flex-wrap">
-
 
             {!loading && productStore &&
                 <>
@@ -80,7 +167,7 @@ const Checkout: FC = () => {
                                             expYear={method.card.exp_year}
                                             country={method.card.country}
                                             last4={method.card.last4}
-                                            onClick={() => setPaymentMethod(method.id)}
+                                            onClick={() => updatePaymentMethod(method.id)}
                                         />
                                     )}
                                 </div>
@@ -97,7 +184,6 @@ const Checkout: FC = () => {
 
                         </div>
 
-
                         <aside className="checkout-cart-totals col-span-3">
                             <>
                                 <h1 className="text-xl font-mono font-semibold w-full">Total</h1>
@@ -108,17 +194,13 @@ const Checkout: FC = () => {
                                     title="Proceed to Payment"
                                     color="yellow"
                                     classes="mt-5"
-                                    disabled={!paymentMethod}
-                                    // onClick={() => alert(33)}
+                                    disabled={!paymentMethod && !paymentIntent}
+                                    onClick={attemptPayment}
                                 />
                             </>
                         </aside>
 
-
                     </div>
-
-
-
                 </>
             }
         </div>
@@ -126,4 +208,4 @@ const Checkout: FC = () => {
 
 }
 
-export default Checkout;
+export default Cart;
