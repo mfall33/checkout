@@ -8,9 +8,10 @@ import { FC, useEffect, useState } from "react";
 import { parseCookies, setCookie, destroyCookie } from 'nookies'
 
 import { stripe } from "@/utils";
-import { getCart } from "@/api/cart";
+import { ICartProduct } from "@/models";
 import useStore from "@/store/useStore";
 import { useProductsStore } from "@/store";
+import { getCart, removeItemFromCart } from "@/api/cart";
 import { Button, CartItem, Header, LoadingCover, PaymentMethod } from "@/components";
 
 const Cart: FC = () => {
@@ -131,6 +132,31 @@ const Cart: FC = () => {
         }
     }
 
+    const removeCartItem = async (cartProduct: ICartProduct) => {
+
+        try {
+
+            const removalConf = confirm("Are you sure you want to remove this item?");
+
+            if (removalConf) {
+
+                const { data } = await removeItemFromCart(session.data?.user.access_token, cartProduct.product._id);
+
+                productStore?.setCart(data);
+
+                if (data.products.length === 0) {
+                    router.push("/products");
+                }
+
+            }
+        } catch (e) {
+
+            // we really need to install some toast library to display error messages in these scenarios
+
+        }
+
+    }
+
     return (<>
 
         <LoadingCover active={loading} />
@@ -151,6 +177,7 @@ const Cart: FC = () => {
                                     price={cartProduct.product.price}
                                     quantity={cartProduct.quantity}
                                     brand={cartProduct.product.brand}
+                                    onRemovePress={() => removeCartItem(cartProduct)}
                                 />
                             )}
 

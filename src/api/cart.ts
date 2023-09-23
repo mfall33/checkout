@@ -1,5 +1,6 @@
 import { authedFetch } from '@/utils';
 import { BASE_URL } from '../config';
+import axios from 'axios';
 
 export const getCart = async (token: String) => {
 
@@ -46,5 +47,21 @@ export const addToCart = async (token: String, productId: String) => {
             return data;
 
         })
+
+}
+
+export const removeItemFromCart = async (token: String, productId: String) => {
+
+    const headers: any = {};
+    headers['x-access-token'] = token;
+
+    const response = await axios.delete(`${BASE_URL}/cart`, {
+        data: {
+            productId: productId
+        },
+        headers: headers
+    });
+
+    return response;
 
 }

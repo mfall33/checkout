@@ -16,3 +16,4 @@ if session.paymentIntent use session.paymentIntent else stripe.createPaymentInte
 --Internal code cleanup and reflect on project structure (make changes where best suited)
 --form validation for login and signup
 -- re-implement signup
+-- Install a toast package to display error messages in catch blocks

@@ -5,10 +5,11 @@ type PaymentMethodProps = {
     price: number,
     quantity: number,
     brand: string,
+    onRemovePress?: () => void
 }
 
 const CartItem = ({
-    name, price, quantity, brand
+    name, price, quantity, brand, onRemovePress
 }: PaymentMethodProps) => {
     return (<div className="checkout-cart-item">
         <div className="pr-0 md:pr-3">
@@ -26,7 +27,7 @@ const CartItem = ({
             <p className="font-mono">{brand}</p>
             <p className="font-mono"><b>Quantity:</b> {quantity}</p>
         </div>
-        <div>&#x2717;</div>
+        <div className="checkout-cart-remove-item" onClick={onRemovePress}>&#x2715;</div>
     </div>);
 }
 

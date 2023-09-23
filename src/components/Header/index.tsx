@@ -21,7 +21,7 @@ const Header: React.FC = () => {
                         <span className={`cart-items-amount ${!productStore ? 'text-yellow' : ''}`}>{productStore && productStore.wishList.length || 0}</span>
                     </Link>
                     <div className="flex dropdown left">
-                        <Link className="flex" href="/cart">
+                        <Link className="flex" href={productStore && productStore.cart.products?.length ? "/cart" : ""}>
                             <Image className="cart" src="/assets/cart.png" alt="Cart" width="25" height="25" />
                             <span className={`cart-items-amount ${!productStore ? 'text-yellow' : ''}`}>{productStore && productStore.cart.products?.length || 0}</span>
                         </Link>
