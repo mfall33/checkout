@@ -5,10 +5,10 @@ import { useSession } from "next-auth/react";
 import React, { useState, FC, useEffect } from "react";
 
 import { IProduct } from "@/models";
-import { addToCart, getCart } from "@/api/cart";
 import useStore from "@/store/useStore";
 import { useProductsStore } from "@/store";
 import { getProducts } from "@/api/products";
+import { addToCart, getCart } from "@/api/cart";
 import { Dropdown, Header, LoadMore, LoadingCover, ProductCard } from "@/components"
 import { BRAND, FILTER_OPTIONS, PRICE_RANGE, SORT_BY, SORT_OPTIONS } from "@/constants";
 
