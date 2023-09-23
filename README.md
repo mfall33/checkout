@@ -14,3 +14,5 @@ if session.paymentIntent use session.paymentIntent else stripe.createPaymentInte
 --Initial load issues with zustand need fixed
 --Mobile responsiveness
 --Internal code cleanup and reflect on project structure (make changes where best suited)
+--form validation for login and signup
+-- re-implement signup

@@ -26,6 +26,7 @@ const CartItem = ({
             <p className="font-mono">{brand}</p>
             <p className="font-mono"><b>Quantity:</b> {quantity}</p>
         </div>
+        <div>&#x2717;</div>
     </div>);
 }
 

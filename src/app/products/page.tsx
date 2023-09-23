@@ -174,9 +174,9 @@ const Products: FC = () => {
       .map((product: IProduct) => (
         <ProductCard
           inWishList={productStore.wishList.some(prod => prod?._id === product._id)}
-          // inWishList={false}
           onHeartClick={() => productStore.addToWishList(product)}
           href={`/products/${product._id}`}
+          // uniqueKey={product._id}
           key={product._id}
           title={product.name}
           image="/assets/Model.webp"
@@ -215,7 +215,7 @@ const Products: FC = () => {
               onClearPress={handleSortClear}
               renderItem={(item, index) =>
                 <li
-                  key={index}
+                  key={`${index}-${item.name}`}
                   className={`transition-all shadow hover:shadow-lg p-3 bg-white border-black rounded cursor-pointer mb-2 ${sort === item.name && 'border-2'}`}
                   onClick={() => handleSortSelection(item)}>
                   {item.name}
@@ -229,8 +229,8 @@ const Products: FC = () => {
               option={PRICE_RANGE}
               side={"right"}
               onClearPress={handlePriceRangeClear}
-              renderItem={() =>
-                <div className="bg-white p-3 rounded">
+              renderItem={(item, index) =>
+                <div className="bg-white p-3 rounded" key={`${index}-${item}`}>
                   <label className="font-normal">Price up to: <span className="font-semibold">£{range}</span></label>
                   <input
                     type="range"
@@ -252,7 +252,7 @@ const Products: FC = () => {
                 side={"right"}
                 renderItem={(item: string, index: number) =>
                   <li
-                    key={index}
+                  key={`${index}-${item}`}
                     className={`transition-all shadow hover:shadow-lg p-3 bg-white border-black rounded cursor-pointer mb-2 ${brand === item && 'border-2'}`}
                     onClick={() => handleBrandSelection(item)}>
                     {item}

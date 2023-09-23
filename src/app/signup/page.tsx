@@ -6,7 +6,6 @@ const Register: FC = () => {
 
     async function create(formData: any) {
         'use server'
-
     }
 
     return (

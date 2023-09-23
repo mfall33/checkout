@@ -1,4 +1,4 @@
-import {FC} from "react";
+import { FC } from "react";
 import Image from 'next/image';
 
 import { BlurImage, Button } from "..";
@@ -15,7 +15,8 @@ interface CardProps {
     cardBtn2Text?: string,
     cardBtn2Click?: () => void,
     href?: string,
-    onHeartClick?: (arg: any) => void
+    onHeartClick?: (arg: any) => void,
+    uniqueKey?: string
 }
 
 const ProductCard: FC<CardProps> = ({
@@ -29,6 +30,7 @@ const ProductCard: FC<CardProps> = ({
     cardBtn2Text,
     cardBtn2Click,
     href = '',
+    uniqueKey,
     onHeartClick
 }) => {
 
@@ -37,24 +39,22 @@ const ProductCard: FC<CardProps> = ({
             <div className="card-title-cont">
                 <h1 className="text-xl font-mono">{title}</h1>
             </div>
-            {/* <Link href={href}> */}
-                <div className="card-img-cont">
-                    <BlurImage
-                        src={image}
-                        alt="Heart"
-                        width={300}
-                        height={300}
-                    />
-                    <Image
-                        onClick={onHeartClick}
-                        className="card-like"
-                        src={`/assets/Heart-${inWishList ? 'Full' : 'Empty'}.png`}
-                        alt="Heart"
-                        width="25"
-                        height="25"
-                    />
-                </div>
-            {/* </Link> */}
+            <div className="card-img-cont">
+                <BlurImage
+                    src={image}
+                    alt="Heart"
+                    width={300}
+                    height={300}
+                />
+                <Image
+                    onClick={onHeartClick}
+                    className="card-like"
+                    src={`/assets/Heart-${inWishList ? 'Full' : 'Empty'}.png`}
+                    alt="Heart"
+                    width="25"
+                    height="25"
+                />
+            </div>
             <div className="card-price-cont">
                 <p className="font-mono">{text1}</p>
                 {text2 &&
