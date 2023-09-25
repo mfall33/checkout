@@ -172,6 +172,19 @@
     }
 }
 
+.toast {
+    background: $yellow;
+    border: 2px solid $lavender;
+    border-radius: 0.25rem;
+    font-family: monospace, sans-serif;
+    font-weight: 600;
+    padding: 1rem;
+    min-width: 80%;
+    text-align: center;
+    user-select: none;
+    transition: all 0.4s ease;
+}
+
 .hide-scrollbar {
     scrollbar-width: thin;
     scrollbar-color: transparent transparent;

@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import Link from "next/link";
+import Toast from 'react-hot-toast';
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { FC, useEffect, useState } from "react";
@@ -31,6 +32,8 @@ const Cart: FC = () => {
 
         if (session.status !== 'loading') {
 
+            // retrieving the cart and payment methods 
+
             const token = session.data?.user.access_token;
 
             getCart(token)
@@ -42,8 +45,7 @@ const Cart: FC = () => {
                     setPaymentMethods(response.data);
                     setLoading(false);
                 })
-                .catch(err => console.log(JSON.stringify(err.messge)));
-
+                .catch(err => Toast.error("Something went wrong..."));
 
         }
     }, [session.status])
@@ -73,8 +75,6 @@ const Cart: FC = () => {
                     .then(res => {
                         if (res.data.success) {
 
-                            console.log("PaymentIntentId: " + JSON.stringify(res.data))
-
                             setPaymentIntent(res.data.paymentIntent.id);
 
                             // test this for max age expiry
@@ -85,7 +85,7 @@ const Cart: FC = () => {
 
                         }
                     })
-                    .catch(err => console.log("error: " + err.message))
+                    .catch(err => Toast.error("Something went wrong..."))
 
             }
         }
@@ -106,8 +106,12 @@ const Cart: FC = () => {
         if (response.data.success) {
 
             destroyCookie(null, 'pid');
+            Toast("Order placed successfully!");
             router.push("/payment-success");
 
+        } else {
+
+            Toast.error("Failed to process payment please try again!");
         }
 
         setPaymentProcessing(false);
@@ -120,14 +124,14 @@ const Cart: FC = () => {
 
             setPaymentMethod(method);
 
-            const response = await axios.post("/api/update-payment-intent", {
+            await axios.post("/api/update-payment-intent", {
                 body: {
                     paymentMethod: paymentMethod,
                     paymentIntentId: paymentIntent,
                 },
             });
 
-            console.log("RESPONSE: " + JSON.stringify(response));
+            Toast("Payment method updated!")
 
         }
     }
@@ -144,14 +148,17 @@ const Cart: FC = () => {
 
                 productStore?.setCart(data);
 
+                Toast("Cart item removed!");
+
                 if (data.products.length === 0) {
                     router.push("/products");
                 }
 
             }
+
         } catch (e) {
 
-            // we really need to install some toast library to display error messages in these scenarios
+            Toast.error("Failed to remove item from cart")
 
         }
 

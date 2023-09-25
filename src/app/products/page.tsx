@@ -1,6 +1,7 @@
 'use client';
 
 import _ from "underscore";
+import Toast from 'react-hot-toast';
 import { useSession } from "next-auth/react";
 import React, { useState, FC, useEffect } from "react";
 
@@ -41,7 +42,7 @@ const Products: FC = () => {
 
       getCart(token)
         .then(productStore?.setCart)
-        .catch(err => console.log("Err: " + err))
+        .catch(err => Toast.error("Failed to fetch Cart"))
 
       getProducts(page, token)
         .then((data) => {
@@ -83,7 +84,7 @@ const Products: FC = () => {
           }, 1000)
 
         })
-        .catch(err => console.log(err))
+        .catch(err => Toast.error("Failed to fetch products..."))
       // come back and handle this properly with an error message
     }
 
@@ -142,9 +143,11 @@ const Products: FC = () => {
 
       productStore?.setCart(cart);
 
+      Toast(`(${product.name} - ${product.brand}) - added to Cart`);
+
     } catch (e) {
 
-      console.log(e.message)
+      Toast.error("Failed to add Product to Cart");
 
     }
 
@@ -176,7 +179,6 @@ const Products: FC = () => {
           inWishList={productStore.wishList.some(prod => prod?._id === product._id)}
           onHeartClick={() => productStore.addToWishList(product)}
           href={`/products/${product._id}`}
-          // uniqueKey={product._id}
           key={product._id}
           title={product.name}
           image="/assets/Model.webp"
@@ -252,7 +254,7 @@ const Products: FC = () => {
                 side={"right"}
                 renderItem={(item: string, index: number) =>
                   <li
-                  key={`${index}-${item}`}
+                    key={`${index}-${item}`}
                     className={`transition-all shadow hover:shadow-lg p-3 bg-white border-black rounded cursor-pointer mb-2 ${brand === item && 'border-2'}`}
                     onClick={() => handleBrandSelection(item)}>
                     {item}

@@ -1,9 +1,10 @@
-import './globals.css'
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import '../styles/app.scss'
-import { NextAuthProvider } from '@/providers/sessionProvider'
-import { AuthProvider } from '@/providers/authProvider'
+import './globals.css';
+import '../styles/app.scss';
+
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import { ToastProvider } from '@/providers/toastProvider';
+import { NextAuthProvider } from '@/providers/sessionProvider';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,7 +23,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <NextAuthProvider>
-          {children}
+          <ToastProvider>
+            {children}
+          </ToastProvider>
         </NextAuthProvider>
       </body>
     </html>

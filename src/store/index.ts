@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { ICart, ICartProduct, IProduct } from '@/models';
+import { ICart, IProduct } from '@/models';
 
 export type StoreState = {
     cart: ICart,
