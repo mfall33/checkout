@@ -3,17 +3,17 @@
 import Link from "next/link";
 import { FC, useState, ChangeEvent } from "react";
 
+import Toast from 'react-hot-toast';
 import { Button } from "@/components";
-import { useRouter } from "next/navigation";
 import { signIn } from 'next-auth/react';
-
+import { useRouter } from "next/navigation";
 
 const Login: FC = () => {
 
-    const [email, setEmail] = useState<string>("matthewfallon33@gmail.com");
-    const [password, setPassword] = useState<string>("Password123");
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
 
-    const { push } = useRouter();
+    const router = useRouter();
 
     const onSubmit = () => {
 
@@ -25,13 +25,15 @@ const Login: FC = () => {
         })
             .then(data => {
 
-                if (data.error)
-                    throw new Error(data.error)
+                if (data.error) {
+                    throw new Error(data.error);
+                }
 
-                push(data.url);
+                Toast("Logged in successfully!");
+                router.push(data.url);
 
             })
-            .catch(err => console.log("Error: " + JSON.stringify(err.message)));
+            .catch(err => Toast("Failed to login..."));
 
     }
 
@@ -49,7 +51,11 @@ const Login: FC = () => {
                 <div className="flex items-center justify-center h-full">
                     <div className="flex flex-col border-2 border p-5 w-full max-w-screen-sm bg-lavender rounded">
 
-                        <h1 className='font-mono text-3xl text-center my-5'><span className='text-yellow font'>Check</span>Out</h1>
+                        <h1 className='font-mono text-3xl text-center mt-5 pb-3 border-b-2 border-yellow'><span className='text-yellow font'>Check</span>Out</h1>
+
+                        <h3 className="font-mono text-2xl font-semibold pt-3 text-center mb-5">
+                            Sign In
+                        </h3>
 
                         <input
                             value={email}
@@ -70,7 +76,7 @@ const Login: FC = () => {
                         />
 
                         <Button
-                            title="Login"
+                            title="Submit"
                             color="yellow"
                             onClick={onSubmit}
                         />

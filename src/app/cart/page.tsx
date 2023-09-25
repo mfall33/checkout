@@ -6,7 +6,7 @@ import Toast from 'react-hot-toast';
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { FC, useEffect, useState } from "react";
-import { parseCookies, setCookie, destroyCookie } from 'nookies'
+import { parseCookies, setCookie, destroyCookie } from 'nookies';
 
 import { stripe } from "@/utils";
 import { ICartProduct } from "@/models";

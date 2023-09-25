@@ -4,12 +4,9 @@ WHAT NEEDS DONE
 
 --Swap any non caching API calls over to AXIOS
 --Need to try and bring screens away from "use client" utilize the server more.
---Need to implement remove cart item functionality
 --Need to implement edit quantity functionality
 --Need to test out 3ds and 3ds2 cards on stripe implementation
 --Payment success screen (ORDER CONFIRMATION SCREEN) should maybe mention receiving an email about the order instead of saying the order has been confirmed (can send out an email from stripe webhook API if successful)
 --Initial load issues with zustand need fixed
 --Mobile responsiveness
 --Internal code cleanup and reflect on project structure (make changes where best suited)
---form validation for login and signup
--- re-implement signup

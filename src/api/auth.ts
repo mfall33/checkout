@@ -14,6 +14,7 @@ export const login = ({ email, password }: LoginProps) => {
 
     return fetch(`${BASE_URL}/login`,
         {
+            cache: 'no-cache',
             credentials: 'include',
             method: 'POST',
             headers: {
@@ -30,7 +31,17 @@ export const login = ({ email, password }: LoginProps) => {
 
 export const register = ({ email, password }: RegisterProps) => {
 
-    return fetch(`${BASE_URL}/register`, { cache: 'no-store' })
+    return fetch(`${BASE_URL}/register`, {
+        cache: 'no-store',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            email: email,
+            password: password
+        })
+    })
         .then((res) => res.json())
 
 }

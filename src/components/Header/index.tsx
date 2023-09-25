@@ -1,6 +1,8 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { destroyCookie } from 'nookies';
+import { signOut } from "next-auth/react";
 
 import useStore from "@/store/useStore";
 import { useProductsStore } from "@/store";
@@ -20,7 +22,7 @@ const Header: React.FC = () => {
                         <Image className="cart" src="/assets/heart-full.png" alt="Cart" width="25" height="25" />
                         <span className={`cart-items-amount ${!productStore ? 'text-yellow' : ''}`}>{productStore && productStore.wishList.length || 0}</span>
                     </Link>
-                    <div className="flex dropdown left">
+                    <div className="flex dropdown left mr-5">
                         <Link className="flex" href={productStore && productStore.cart.products?.length ? "/cart" : ""}>
                             <Image className="cart" src="/assets/cart.png" alt="Cart" width="25" height="25" />
                             <span className={`cart-items-amount ${!productStore ? 'text-yellow' : ''}`}>{productStore && productStore.cart.products?.length || 0}</span>
@@ -37,9 +39,28 @@ const Header: React.FC = () => {
                                             {item.product.name} - <b>£{item.product.price} - <i>({item.quantity})</i></b>
                                         </li>
                                     )}
+                                    <p className="mb-0 mt-3 font-mono">Total: <b>£{productStore.cart?.total}</b></p>
                                 </ul>
                             </div>
                         }
+                    </div>
+                    <div className="flex dropdown left">
+                        <Link className="flex" href={productStore && productStore.cart.products?.length ? "/cart" : ""}>
+                            <Image className="cart" src="/assets/setting.png" alt="Cart" width="25" height="25" />
+                        </Link>
+
+                        <div className="dropdown-content hide-scrollbar">
+                            <ul>
+                                <li onClick={() => {
+                                    localStorage.clear();
+                                    destroyCookie(null, 'pid');
+                                    signOut()
+                                }}
+                                    className={`transition-all shadow hover:shadow-lg p-3 font-semibold bg-white border-black rounded cursor-pointer mt-2`}>
+                                    Log Out
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
