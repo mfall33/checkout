@@ -40,12 +40,7 @@ const Cart: FC = () => {
                 .then(productStore?.setCart)
                 .catch(err => console.log("Err: " + err))
 
-            stripe.customers.listPaymentMethods(session.data?.user.stripe_customer_id)
-                .then(response => {
-                    setPaymentMethods(response.data);
-                    setLoading(false);
-                })
-                .catch(err => Toast.error("Something went wrong..."));
+            getPaymentMethods(session.data?.user.stripe_customer_id)
 
         }
     }, [session.status])
@@ -90,7 +85,18 @@ const Cart: FC = () => {
             }
         }
 
-    }, [loading])
+    }, [loading]);
+
+    const getPaymentMethods = (stripe_customer_id: string) => {
+
+
+        stripe.customers.listPaymentMethods(stripe_customer_id)
+            .then((response: any) => {
+                setPaymentMethods(response.data);
+                setLoading(false);
+            })
+            .catch(err => Toast.error("Something went wrong..."));
+    }
 
     const attemptPayment = async () => {
 
@@ -136,25 +142,51 @@ const Cart: FC = () => {
         }
     }
 
+    const removePaymentMethod = async (event: any, paymentMethodId: string) => {
+
+        event.stopPropagation();
+
+        if (paymentIntent) {
+
+            const deleteMethodConf = confirm("Are you sure you want to remove this payment method?")
+
+            if (!deleteMethodConf) return;
+
+            await axios.post("/api/detach-payment-method", {
+                body: {
+                    paymentMethodId: paymentMethodId,
+                },
+            });
+
+            getPaymentMethods(session.data?.user.stripe_customer_id);
+
+            if (paymentMethodId === paymentMethod) {
+                setPaymentMethod("");
+            }
+
+            Toast("Payment method removed!")
+
+        }
+    }
+
     const removeCartItem = async (cartProduct: ICartProduct) => {
 
         try {
 
             const removalConf = confirm("Are you sure you want to remove this item?");
 
-            if (removalConf) {
+            if (!removalConf) return;
 
-                const { data } = await removeItemFromCart(session.data?.user.access_token, cartProduct.product._id);
+            const { data } = await removeItemFromCart(session.data?.user.access_token, cartProduct.product._id);
 
-                productStore?.setCart(data);
+            productStore?.setCart(data);
 
-                Toast("Cart item removed!");
+            Toast("Cart item removed!");
 
-                if (data.products.length === 0) {
-                    router.push("/products");
-                }
-
+            if (data.products.length === 0) {
+                router.push("/products");
             }
+
 
         } catch (e) {
 
@@ -220,6 +252,7 @@ const Cart: FC = () => {
                                             country={method.card.country}
                                             last4={method.card.last4}
                                             onClick={() => updatePaymentMethod(method.id)}
+                                            onRemoveClick={(e) => removePaymentMethod(e, method.id)}
                                         />
                                     )}
                                 </div>
@@ -246,7 +279,7 @@ const Cart: FC = () => {
                                     title="Proceed to Payment"
                                     color="yellow"
                                     classes="mt-5"
-                                    disabled={!paymentMethod && !paymentIntent}
+                                    disabled={!(!!paymentMethod.length && !!paymentIntent.length)}
                                     onClick={attemptPayment}
                                 />
                             </>

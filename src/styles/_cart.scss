@@ -51,9 +51,18 @@
     border-radius: 0.25rem;
 }
 
+.checkout-cart-quantity {
+    padding: 0rem 1rem;
+    border-radius: 0.25rem;
+    max-width: 50px;
+    text-align: center;
+    font-weight: 500;
+}
+
 .checkout-payment-method {
     opacity: 0.8;
     cursor: pointer;
+    position: relative;
     padding: 0.75rem;
     border-radius: 0.25rem;
     background: $lightgrey;
@@ -70,10 +79,17 @@
     }
 }
 
-.checkout-cart-quantity {
-    padding: 0rem 1rem;
-    border-radius: 0.25rem;
-    max-width: 50px;
-    text-align: center;
-    font-weight: 500;
+.checkout-payment-method-remove-item {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    background: $yellow;
+    padding: 1px 6px;
+    border-radius: 100%;
+    opacity: 0.75;
+    border: 1px solid $black;
+    z-index: 9999;
 }
