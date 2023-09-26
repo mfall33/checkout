@@ -168,16 +168,11 @@ const Cart: FC = () => {
 
         try {
 
-            alert(quantity);
+            const data = await updateQuantity(session.data?.user.access_token, productId, quantity);
 
-            // const { data } = await updateQuantity(session.data?.user.access_token, productId, quantity);
-
-            // alert(JSON.stringify(data))
-
-            // productStore?.setCart(data);
+            productStore?.setCart(data);
 
             Toast("Quantity updated!");
-
 
         } catch (e) {
             Toast.error("Failed to update Quantity");

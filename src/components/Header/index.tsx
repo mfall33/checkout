@@ -33,11 +33,13 @@ const Header: React.FC = () => {
                                 <h3 className="font-mono font-semibold text-lg">Cart</h3>
                                 <ul>
                                     {productStore.cart?.products?.map((item, index) =>
-                                        <li
-                                            key={index}
-                                            className={`transition-all shadow hover:shadow-lg p-3 bg-white border-black rounded cursor-pointer mt-2`}>
-                                            {item.product.name} - <b>£{item.product.price} - <i>({item.quantity})</i></b>
-                                        </li>
+                                        <Link href={`/products/${item.product._id}`}>
+                                            <li
+                                                key={index}
+                                                className={`transition-all shadow hover:shadow-lg p-3 bg-white border-black rounded cursor-pointer mt-2`}>
+                                                {item.product.name} - <b>£{item.product.price} - <i>({item.quantity})</i></b>
+                                            </li>
+                                        </Link>
                                     )}
                                     <p className="mb-0 mt-3 font-mono">Total: <b>£{productStore.cart?.total}</b></p>
                                 </ul>

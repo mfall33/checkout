@@ -28,15 +28,14 @@ const CartItem = ({
             <p className="font-mono">{brand}</p>
             <label className="font-mono"><b>Quantity:</b></label>
             <div className="flex mt-2">
-                <Button title="-" classes="mr-2 py-1" color="yellow" />
+                <Button title="-" classes="mr-2 py-1" color="yellow" onClick={() => onQuantityChange(id, quantity - 1)} />
                 <input
                     name="quantity"
                     type="number"
-                    // onBlur={(e: any) => onQuantityChange(id, e.target.value)}
                     className="checkout-cart-quantity"
                     value={quantity}
                 ></input>
-                <Button title="+" classes="ml-2 py-1" color="yellow" />
+                <Button title="+" classes="ml-2 py-1" color="yellow" onClick={() => onQuantityChange(id, quantity + 1)} />
             </div>
         </div>
         <div className="checkout-cart-remove-item" onClick={onRemovePress}>&#x2715;</div>

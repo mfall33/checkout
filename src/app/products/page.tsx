@@ -174,7 +174,7 @@ const Products: FC = () => {
     return products
       .filter(product => product.price <= range)
       .filter(product => brand === BRAND ? true : product.brand === brand)
-      .map((product: IProduct) => (
+      .map((product: IProduct) =>
         <ProductCard
           inWishList={productStore.wishList.some(prod => prod?._id === product._id)}
           onHeartClick={() => productStore.addToWishList(product)}
@@ -185,11 +185,11 @@ const Products: FC = () => {
           text1={'£' + product.price}
           cardBtn1Disabled={productStore.cart.products.some(prod => prod.product._id === product._id)}
           text2={product.brand}
-          quantity={0}
+          quantity={product.quantity}
           cardBtn1Text="Add to Basket"
           cardBtn1Click={() => addProductToCart(product)}
         />
-      ));
+      );
   };
 
   return (
