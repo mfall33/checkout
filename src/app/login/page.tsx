@@ -62,7 +62,7 @@ const Login: FC = () => {
                             onChange={emailChangeHandler}
                             className="border-2 border p-3 mb-2"
                             type="text"
-                            name="username"
+                            name="email"
                             placeholder="Username/Email"
                         />
 

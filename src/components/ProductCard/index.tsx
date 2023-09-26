@@ -2,8 +2,10 @@ import { FC } from "react";
 import Image from 'next/image';
 
 import { BlurImage, Button } from "..";
+import Link from "next/link";
 
 interface CardProps {
+    id: string,
     title: string,
     image: string,
     text1: string | number,
@@ -15,12 +17,11 @@ interface CardProps {
     cardBtn1Disabled?: boolean,
     cardBtn2Text?: string,
     cardBtn2Click?: () => void,
-    href?: string,
     onHeartClick?: (arg: any) => void,
-    uniqueKey?: string
 }
 
 const ProductCard: FC<CardProps> = ({
+    id,
     title,
     image,
     text1,
@@ -31,8 +32,6 @@ const ProductCard: FC<CardProps> = ({
     cardBtn1Disabled = false,
     cardBtn2Text,
     cardBtn2Click,
-    href = '',
-    uniqueKey,
     onHeartClick
 }) => {
 
@@ -41,7 +40,7 @@ const ProductCard: FC<CardProps> = ({
             <div className="card-title-cont">
                 <h1 className="text-xl font-mono">{title}</h1>
             </div>
-            <div className="card-img-cont">
+            <Link href={`/products/${id}`} className="card-img-cont">
                 <BlurImage
                     src={image}
                     alt="Heart"
@@ -56,7 +55,7 @@ const ProductCard: FC<CardProps> = ({
                     width="25"
                     height="25"
                 />
-            </div>
+            </Link>
             <div className="card-price-cont">
                 <p className="font-mono">{text1}</p>
                 {text2 &&

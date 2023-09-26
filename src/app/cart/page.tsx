@@ -38,9 +38,11 @@ const Cart: FC = () => {
 
             getCart(token)
                 .then(productStore?.setCart)
-                .catch(err => console.log("Err: " + err))
+                .catch(err => Toast("Something went wrong"));
 
             getPaymentMethods(session.data?.user.stripe_customer_id)
+
+            setLoading(false);
 
         }
     }, [session.status])
@@ -93,7 +95,6 @@ const Cart: FC = () => {
         stripe.customers.listPaymentMethods(stripe_customer_id)
             .then((response: any) => {
                 setPaymentMethods(response.data);
-                setLoading(false);
             })
             .catch(err => Toast.error("Something went wrong..."));
     }
@@ -111,16 +112,55 @@ const Cart: FC = () => {
 
         if (response.data.success) {
 
-            destroyCookie(null, 'pid');
-            Toast("Order placed successfully!");
-            router.push("/payment-success");
+            if (response.data.paymentIntent.status === 'requires_action') {
+
+
+                const paymentCheckInterval = setInterval(() => {
+
+                    const response = getPaymentStatus();
+
+                    response.then(res => {
+
+                        if (res.data.paymentIntent.status === 'succeeded') {
+
+                            router.push("/payment-success");
+
+                            clearInterval(paymentCheckInterval);
+
+                        }
+
+                    });
+
+                }, 3000)
+
+                window.open(response.data.paymentIntent.next_action.use_stripe_sdk.stripe_js, '_blank');
+            }
+
+            if (response.data.paymentIntent.status === 'succeeded') {
+
+                setPaymentProcessing(false);
+                destroyCookie(null, 'pid');
+                Toast("Order placed successfully!");
+             
+            }
 
         } else {
 
             Toast.error("Failed to process payment please try again!");
+            setPaymentProcessing(false);
         }
 
-        setPaymentProcessing(false);
+
+    }
+
+    const getPaymentStatus = () => {
+
+        return axios.post("/api/check-payment-intent", {
+            body: {
+                paymentMethod: paymentMethod,
+                paymentIntentId: paymentIntent,
+            },
+        });
 
     }
 
@@ -214,7 +254,7 @@ const Cart: FC = () => {
 
     return (<>
 
-        <LoadingCover active={loading} />
+        <LoadingCover active={loading || paymentProcessing} />
 
         <Header />
         <div className="container m-auto py-8 flex flex-wrap">
@@ -276,7 +316,7 @@ const Cart: FC = () => {
                                 <p className="">Total: <b>£{`${productStore.cart.total}`}</b></p>
 
                                 <Button
-                                    title="Proceed to Payment"
+                                    title="Place Payment"
                                     color="yellow"
                                     classes="mt-5"
                                     disabled={!(!!paymentMethod.length && !!paymentIntent.length)}

@@ -4,12 +4,13 @@
 import { useParams } from 'next/navigation';
 import { useSession } from "next-auth/react";
 import { FC, useEffect, useState } from "react";
+import Toast from 'react-hot-toast';
 
 import Product from "@/models/Product";
 import { getProduct } from "@/api/products";
+import useStore, { StoreState } from '@/store';
 import { Header, Button, LoadingCover, BlurImage } from "@/components";
 
-import useStore, { StoreState } from '@/store';
 
 const Product: FC = () => {
 
@@ -36,8 +37,7 @@ const Product: FC = () => {
                     }, 1000)
 
                 })
-                .catch(err => console.log(err))
-            // come back and handle this properly with an error message
+                .catch(err => Toast("Failed to retrieve Product"))
 
         }
 

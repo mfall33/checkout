@@ -42,7 +42,7 @@ const Products: FC = () => {
 
       getCart(token)
         .then(productStore?.setCart)
-        .catch(err => Toast.error("Failed to fetch Cart"))
+        .catch(err => Toast.error("Failed to fetch Cart"));
 
       getProducts(page, token)
         .then((data) => {
@@ -176,6 +176,7 @@ const Products: FC = () => {
       .filter(product => brand === BRAND ? true : product.brand === brand)
       .map((product: IProduct) =>
         <ProductCard
+          id={product._id}
           inWishList={productStore.wishList.some(prod => prod?._id === product._id)}
           onHeartClick={() => productStore.addToWishList(product)}
           href={`/products/${product._id}`}

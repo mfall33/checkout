@@ -2,11 +2,13 @@
 
 import React from "react";
 import axios from "axios";
+import Toast from'react-hot-toast';
 import { useSession } from "next-auth/react";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 
 import { Button } from "..";
 import { useRouter } from "next/navigation";
+
 
 const PaymentForm = () => {
     const stripe = useStripe();
@@ -40,10 +42,11 @@ const PaymentForm = () => {
 
             if(response.data.success) {
                 router.push('/cart');
+                Toast("Payment method added!");
             }
 
         } catch (error) {
-            console.log(error);
+            Toast("Failed to add payment method, please try again..")
         }
     };
 

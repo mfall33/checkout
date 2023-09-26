@@ -17,6 +17,7 @@ const wishList: FC = () => {
             wishList
                 .map((product: Product) => (
                     <ProductCard
+                        id={product._id}
                         inWishList={wishList.some(prod => prod._id === product._id)}
                         onHeartClick={() => addToWishList(product)}
                         href={`/products/${product._id}`}

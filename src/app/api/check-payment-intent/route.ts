@@ -8,11 +8,12 @@ export async function POST(req: NextRequest) {
 
         const request = await req.json();
 
-        const { paymentMethod, paymentIntentId } = request.body;
+        const { paymentIntentId } = request.body;
 
-        const paymentIntent = await stripe.paymentIntents.confirm(
+        console.log("paymentIntentId: " + paymentIntentId);
+
+        const paymentIntent = await stripe.paymentIntents.retrieve(
             paymentIntentId,
-            { payment_method: paymentMethod }
         );
 
         return NextResponse.json({
@@ -21,8 +22,8 @@ export async function POST(req: NextRequest) {
         }, {
             status: 200,
         });
-
-    } catch (e) {
+        
+    } catch (e: any) {
 
         console.log("Error: " + e.message)
 
