@@ -16,3 +16,4 @@ export const LAVENDER = '#E6E6FA';
 export const LAVENDER_OP = '#e6e6fad1';
 export const YELLOW = '#ffec3a';
 export const RED = '#dc3545';
+export const BLACK = '#000';

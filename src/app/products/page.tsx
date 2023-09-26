@@ -183,6 +183,7 @@ const Products: FC = () => {
           title={product.name}
           image="/assets/Model.webp"
           text1={'£' + product.price}
+          cardBtn1Disabled={productStore.cart.products.some(prod => prod.product._id === product._id)}
           text2={product.brand}
           quantity={0}
           cardBtn1Text="Add to Basket"

@@ -12,6 +12,7 @@ interface CardProps {
     inWishList?: boolean,
     cardBtn1Text?: string,
     cardBtn1Click?: () => void,
+    cardBtn1Disabled?: boolean,
     cardBtn2Text?: string,
     cardBtn2Click?: () => void,
     href?: string,
@@ -27,6 +28,7 @@ const ProductCard: FC<CardProps> = ({
     inWishList = false,
     cardBtn1Text,
     cardBtn1Click,
+    cardBtn1Disabled = false,
     cardBtn2Text,
     cardBtn2Click,
     href = '',
@@ -66,6 +68,7 @@ const ProductCard: FC<CardProps> = ({
                             title={cardBtn1Text}
                             color={"yellow"}
                             onClick={cardBtn1Click}
+                            disabled={cardBtn1Disabled}
                         />
                     }
 

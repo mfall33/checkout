@@ -36,6 +36,7 @@ export const addToCart = async (token: String, productId: String) => {
             body: JSON.stringify({
                 productId: productId
             }),
+            cache: 'no-store'
         })
         .then(res => res.json())
         .then(data => {
@@ -63,5 +64,34 @@ export const removeItemFromCart = async (token: String, productId: String) => {
     });
 
     return response;
+
+}
+
+export const updateQuantity = async (token: String, productId: String, quantity: number) => {
+
+    return await fetch(`${BASE_URL}/cart`,
+        {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-access-token': token
+            },
+            body: JSON.stringify({
+                productId: productId,
+                quantity: quantity
+            }),
+        })
+        .then(res => res.json())
+        .then(data => {
+
+            console.log("DATA: " + JSON.stringify(data))
+
+            if (data.message) {
+                throw Error(data.message);
+            }
+
+            return data;
+
+        })
 
 }

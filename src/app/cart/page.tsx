@@ -12,7 +12,7 @@ import { stripe } from "@/utils";
 import { ICartProduct } from "@/models";
 import useStore from "@/store/useStore";
 import { useProductsStore } from "@/store";
-import { getCart, removeItemFromCart } from "@/api/cart";
+import { getCart, removeItemFromCart, updateQuantity } from "@/api/cart";
 import { Button, CartItem, Header, LoadingCover, PaymentMethod } from "@/components";
 
 const Cart: FC = () => {
@@ -120,7 +120,7 @@ const Cart: FC = () => {
 
     const updatePaymentMethod = async (method: string) => {
 
-        if (paymentIntent) {
+        if (paymentIntent && paymentMethod !== method) {
 
             setPaymentMethod(method);
 
@@ -164,6 +164,27 @@ const Cart: FC = () => {
 
     }
 
+    const updateProductQuantity = async (productId: String, quantity: number) => {
+
+        try {
+
+            alert(quantity);
+
+            // const { data } = await updateQuantity(session.data?.user.access_token, productId, quantity);
+
+            // alert(JSON.stringify(data))
+
+            // productStore?.setCart(data);
+
+            Toast("Quantity updated!");
+
+
+        } catch (e) {
+            Toast.error("Failed to update Quantity");
+        }
+
+    }
+
     return (<>
 
         <LoadingCover active={loading} />
@@ -180,11 +201,13 @@ const Cart: FC = () => {
                         <div className="checkout-items col-span-9">
                             {productStore?.cart?.products?.map(cartProduct =>
                                 <CartItem
+                                    id={cartProduct.product._id}
                                     name={cartProduct.product.name}
                                     price={cartProduct.product.price}
                                     quantity={cartProduct.quantity}
                                     brand={cartProduct.product.brand}
                                     onRemovePress={() => removeCartItem(cartProduct)}
+                                    onQuantityChange={(id, quantity) => updateProductQuantity(id, quantity)}
                                 />
                             )}
 
