@@ -6,7 +6,7 @@ import useStore, { StoreState } from "@/store";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 
-const wishList: FC = () => {
+const wishList = () => {
 
     const [loading, setLoading] = useState<Boolean>(true);
 
