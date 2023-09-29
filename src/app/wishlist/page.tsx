@@ -6,11 +6,11 @@ import useStore, { StoreState } from "@/store";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 
-const wishList = () => {
+const WishList: FC = () => {
 
     const [loading, setLoading] = useState<Boolean>(true);
 
-    const { wishList, addToWishList, addToCart } = useStore<StoreState>((state) => state);
+    const { wishList, addToWishList } = useStore<StoreState>((state) => state);
 
     const renderProducts = () => {
         return !!wishList.length ?
@@ -28,7 +28,7 @@ const wishList = () => {
                         text2={product.brand}
                         quantity={0}
                         cardBtn1Text="Add to Basket"
-                        cardBtn1Click={() => addToCart(product)}
+                        // cardBtn1Click={() => addToCart(product)}
                     />
                 )) :
             <h1 className="font-bold font-mono">No Products. <Link className="text-yellow font-semibold" href="/products">Add Some...</Link></h1>
