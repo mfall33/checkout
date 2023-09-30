@@ -1,10 +1,8 @@
-import { authedFetch } from '@/utils';
-import { FETCH_CONFIG } from '../config';
+const { SERVER_BASE_URL } = process.env;
 
 export const getProducts = async (page: Number, token: string) => {
 
-    return authedFetch({
-        url: `/products?page=${page}`,
+    return await fetch(`${SERVER_BASE_URL}/products?page=${page}`, {
         headers: {
             'Content-Type': 'applicaton/json',
             'x-access-token': token
@@ -23,11 +21,11 @@ export const getProducts = async (page: Number, token: string) => {
 
 }
 
-export const getProduct = (id: string, token: string) => {
+export const getProduct = async (id: string, token: string) => {
 
-    return authedFetch({
-        url: `/products/${id}`,
-        nextParams: FETCH_CONFIG,
+    // Might need NEXT_PARAMS from config
+
+    return await fetch(`${SERVER_BASE_URL}/products/${id}`, {
         headers: {
             'Content-Type': 'applicaton/json',
             'x-access-token': token

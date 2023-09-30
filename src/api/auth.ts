@@ -1,4 +1,4 @@
-import { BASE_URL } from '../config';
+const { SERVER_BASE_URL } = process.env;
 
 type LoginProps = {
     email: string,
@@ -12,7 +12,7 @@ type RegisterProps = {
 
 export const login = ({ email, password }: LoginProps) => {
 
-    return fetch(`${BASE_URL}/login`,
+    return fetch(`${SERVER_BASE_URL}/login`,
         {
             cache: 'no-cache',
             credentials: 'include',
@@ -31,7 +31,7 @@ export const login = ({ email, password }: LoginProps) => {
 
 export const register = ({ email, password }: RegisterProps) => {
 
-    return fetch(`${BASE_URL}/register`, {
+    return fetch(`${SERVER_BASE_URL}/register`, {
         cache: 'no-store',
         method: 'POST',
         headers: {

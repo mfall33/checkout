@@ -20,8 +20,7 @@ export async function middleware(req: NextRequest) {
 
     } catch (e) {
 
-        // fix this and add in window.location.origin | process.env.BASE_URL or something
-        return NextResponse.redirect(('http://localhost:3000/login'));
+        return NextResponse.redirect((`${process.env.APP_BASE_URL}/login`));
 
     }
 
