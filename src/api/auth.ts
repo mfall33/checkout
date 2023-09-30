@@ -1,5 +1,3 @@
-const { SERVER_BASE_URL } = process.env;
-
 type LoginProps = {
     email: string,
     password: string
@@ -10,9 +8,9 @@ type RegisterProps = {
     password: string
 }
 
-export const login = ({ email, password }: LoginProps) => {
+export const login = async ({ email, password }: LoginProps) => {
 
-    return fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/login`,
+    return await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/login`,
         {
             cache: 'no-cache',
             credentials: 'include',

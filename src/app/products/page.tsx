@@ -202,6 +202,7 @@ const Products: FC = () => {
       <LoadingCover active={loading} />
 
       <Header />
+      
       <div className="container m-auto px-3 md:px-0 py-5">
 
         <div className="grid grid-cols-1 gap-4 pb-3 border-b-2 border-black mb-3">

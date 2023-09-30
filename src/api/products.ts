@@ -1,5 +1,3 @@
-const { SERVER_BASE_URL } = process.env;
-
 export const getProducts = async (page: Number, token: string) => {
 
     return await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/products?page=${page}`, {
