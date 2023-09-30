@@ -2,7 +2,7 @@ const { SERVER_BASE_URL } = process.env;
 
 export const getProducts = async (page: Number, token: string) => {
 
-    return await fetch(`${SERVER_BASE_URL}/products?page=${page}`, {
+    return await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/products?page=${page}`, {
         headers: {
             'Content-Type': 'applicaton/json',
             'x-access-token': token
@@ -25,7 +25,7 @@ export const getProduct = async (id: string, token: string) => {
 
     // Might need NEXT_PARAMS from config
 
-    return await fetch(`${SERVER_BASE_URL}/products/${id}`, {
+    return await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/products/${id}`, {
         headers: {
             'Content-Type': 'applicaton/json',
             'x-access-token': token

@@ -178,7 +178,10 @@ const Products: FC = () => {
         <ProductCard
           id={product._id}
           inWishList={productStore.wishList.some(prod => prod?._id === product._id)}
-          onHeartClick={() => productStore.addToWishList(product)}
+          onHeartClick={(e) => {
+            e.preventDefault();
+            productStore.addToWishList(product)
+          }}
           href={`/products/${product._id}`}
           key={product._id}
           title={product.name}

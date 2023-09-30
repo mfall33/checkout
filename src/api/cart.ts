@@ -4,7 +4,7 @@ const { SERVER_BASE_URL } = process.env;
 
 export const getCart = async (token: string) => {
 
-    return await fetch(`${SERVER_BASE_URL}/cart`,
+    return await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/cart`,
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -26,7 +26,7 @@ export const getCart = async (token: string) => {
 
 export const addToCart = async (token: string, productId: String) => {
 
-    return await fetch(`${SERVER_BASE_URL}/cart`,
+    return await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/cart`,
         {
             method: 'POST',
             headers: {
@@ -56,7 +56,7 @@ export const removeItemFromCart = async (token: string, productId: String) => {
     const headers: any = {};
     headers['x-access-token'] = token;
 
-    const response = await axios.delete(`${SERVER_BASE_URL}/cart`, {
+    const response = await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/cart`, {
         data: {
             productId: productId
         },
@@ -69,7 +69,7 @@ export const removeItemFromCart = async (token: string, productId: String) => {
 
 export const updateQuantity = async (token: string, productId: String, quantity: number) => {
 
-    return await fetch(`${SERVER_BASE_URL}/cart`,
+    return await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/cart`,
         {
             method: 'PATCH',
             headers: {

@@ -12,7 +12,7 @@ type RegisterProps = {
 
 export const login = ({ email, password }: LoginProps) => {
 
-    return fetch(`${SERVER_BASE_URL}/login`,
+    return fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/login`,
         {
             cache: 'no-cache',
             credentials: 'include',
@@ -29,9 +29,9 @@ export const login = ({ email, password }: LoginProps) => {
 
 }
 
-export const register = ({ email, password }: RegisterProps) => {
+export const register = async ({ email, password }: RegisterProps) => {
 
-    return fetch(`${SERVER_BASE_URL}/register`, {
+    return await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/register`, {
         cache: 'no-store',
         method: 'POST',
         headers: {
