@@ -268,6 +268,7 @@ const Cart: FC = () => {
                         <div className="checkout-items col-span-9">
                             {productStore?.cart?.products?.map(cartProduct =>
                                 <CartItem
+                                    key={`${cartProduct.product._id} - ${cartProduct.product.quantity}`}
                                     id={cartProduct.product._id}
                                     name={cartProduct.product.name}
                                     price={cartProduct.product.price}
@@ -285,6 +286,7 @@ const Cart: FC = () => {
 
                                     {paymentMethods.length > 0 && paymentMethods.map(method =>
                                         <PaymentMethod
+                                            key={method.id}
                                             selected={method.id === paymentMethod}
                                             brand={method.card.brand}
                                             expMonth={method.card.exp_month}

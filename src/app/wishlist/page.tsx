@@ -67,4 +67,4 @@ const WishList: FC = () => {
 
 }
 
-export default wishList;
+export default WishList;

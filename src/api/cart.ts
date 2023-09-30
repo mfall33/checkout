@@ -2,15 +2,15 @@ import { authedFetch } from '@/utils';
 import { BASE_URL } from '../config';
 import axios from 'axios';
 
-export const getCart = async (token: String) => {
+export const getCart = async (token: string) => {
 
-    return await authedFetch({
-        url: `/cart`,
-        headers: {
-            'Content-Type': 'applicaton/json',
-            'x-access-token': token
-        }
-    })
+    return await fetch(`${BASE_URL}/cart`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'x-access-token': token
+            },
+        })
         .then((res) => res.json())
         .then(data => {
 
@@ -24,7 +24,7 @@ export const getCart = async (token: String) => {
 
 }
 
-export const addToCart = async (token: String, productId: String) => {
+export const addToCart = async (token: string, productId: String) => {
 
     return await fetch(`${BASE_URL}/cart`,
         {
@@ -51,7 +51,7 @@ export const addToCart = async (token: String, productId: String) => {
 
 }
 
-export const removeItemFromCart = async (token: String, productId: String) => {
+export const removeItemFromCart = async (token: string, productId: String) => {
 
     const headers: any = {};
     headers['x-access-token'] = token;
@@ -67,7 +67,7 @@ export const removeItemFromCart = async (token: String, productId: String) => {
 
 }
 
-export const updateQuantity = async (token: String, productId: String, quantity: number) => {
+export const updateQuantity = async (token: string, productId: String, quantity: number) => {
 
     return await fetch(`${BASE_URL}/cart`,
         {
