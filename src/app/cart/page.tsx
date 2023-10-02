@@ -141,7 +141,7 @@ const Cart: FC = () => {
                 setPaymentProcessing(false);
                 destroyCookie(null, 'pid');
                 Toast("Order placed successfully!");
-             
+
             }
 
         } else {
