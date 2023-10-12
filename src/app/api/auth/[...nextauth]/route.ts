@@ -28,6 +28,10 @@ const handler = NextAuth({
                     throw new Error(data.message);
                 }
 
+                if (data.errors) {
+                    throw new Error(JSON.stringify(data.errors));
+                }
+
                 return data;
 
             }

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { FC, useState, ChangeEvent } from "react";
 
 import Toast from 'react-hot-toast';
-import { Button } from "@/components";
+import { Button, TextInput } from "@/components";
 import { signIn } from 'next-auth/react';
 import { useRouter } from "next/navigation";
 
@@ -12,6 +12,9 @@ const Login: FC = () => {
 
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+
+    const [emailErrors, setEmailErrors] = useState<string[]>([]);
+    const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
 
     const router = useRouter();
 
@@ -33,7 +36,21 @@ const Login: FC = () => {
                 router.push(data.url);
 
             })
-            .catch(err => Toast("Failed to login..."));
+            .catch(err => {
+
+                setPasswordErrors([]);
+                setEmailErrors([]);
+
+                if (typeof (err.message) === 'string') {
+                    Toast.error(err.message);
+                } else {
+                    const errors = (JSON.parse(err.message));
+
+                    setEmailErrors(errors.email);
+                    setPasswordErrors(errors.password);
+                }
+
+            });
 
     }
 
@@ -54,25 +71,24 @@ const Login: FC = () => {
                         <h1 className='font-mono text-3xl text-center mt-5 pb-3 border-b-2 border-yellow'><span className='text-yellow font'>Check</span>Out</h1>
 
                         <h3 className="font-mono text-2xl font-semibold pt-3 text-center mb-5">
-                            Sign In
+                            Login
                         </h3>
 
-                        <input
-                            value={email}
-                            onChange={emailChangeHandler}
-                            className="border-2 border p-3 mb-2"
-                            type="text"
+                        <TextInput
                             name="email"
-                            placeholder="Username/Email"
+                            value={email}
+                            errors={emailErrors}
+                            placeholder="Email"
+                            onChange={emailChangeHandler}
                         />
 
-                        <input
-                            value={password}
-                            onChange={passwordChangeHandler}
-                            className="border-2 border p-3 mb-2"
-                            type="password"
+                        <TextInput
                             name="password"
+                            type="password"
+                            value={password}
+                            errors={passwordErrors}
                             placeholder="Password"
+                            onChange={passwordChangeHandler}
                         />
 
                         <Button

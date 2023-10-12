@@ -38,7 +38,7 @@ const Cart: FC = () => {
 
             getCart(token)
                 .then(productStore?.setCart)
-                .catch(err => Toast("Something went wrong"));
+                .catch(err => Toast.error("Something went wrong"));
 
             getPaymentMethods(session.data?.user.stripe_customer_id)
 
@@ -140,6 +140,7 @@ const Cart: FC = () => {
 
                 setPaymentProcessing(false);
                 destroyCookie(null, 'pid');
+                router.push("/payment-success");
                 Toast("Order placed successfully!");
 
             }

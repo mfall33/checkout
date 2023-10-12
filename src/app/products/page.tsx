@@ -85,7 +85,7 @@ const Products: FC = () => {
 
         })
         .catch(err => Toast.error("Failed to fetch products..."))
-      // come back and handle this properly with an error message
+
     }
 
   }, [page, session.status])
@@ -180,12 +180,16 @@ const Products: FC = () => {
           inWishList={productStore.wishList.some(prod => prod?._id === product._id)}
           onHeartClick={(e) => {
             e.preventDefault();
-            productStore.addToWishList(product)
+            productStore.addToWishList(product);
+
+            const inWishList = productStore.wishList.some(prod => prod?._id === product._id)
+
+            inWishList ? Toast(`${product.name} - removed from wishList`) : Toast(`${product.name} - added to wishList`);
           }}
           href={`/products/${product._id}`}
           key={product._id}
           title={product.name}
-          image="/assets/Model.webp"
+          image="/assets/model.webp"
           text1={'£' + product.price}
           cardBtn1Disabled={productStore.cart.products.some(prod => prod.product._id === product._id)}
           text2={product.brand}

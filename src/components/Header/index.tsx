@@ -54,6 +54,12 @@ const Header: React.FC = () => {
                         <div className="dropdown-content hide-scrollbar">
                             <ul>
                                 <li onClick={() => {
+                                    alert("this part needs built")
+                                }}
+                                    className={`transition-all shadow hover:shadow-lg p-3 font-semibold bg-white border-black rounded cursor-pointer mt-2`}>
+                                    My Orders
+                                </li>
+                                <li onClick={() => {
                                     localStorage.clear();
                                     destroyCookie(null, 'pid');
                                     signOut()

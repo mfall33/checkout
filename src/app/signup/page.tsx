@@ -5,6 +5,7 @@ import Toast from 'react-hot-toast';
 import { FC, useState } from "react";
 import { register } from "@/api/auth";
 import { useRouter } from "next/navigation";
+import { TextInput } from "@/components";
 
 const SignUp: FC = () => {
 
@@ -12,6 +13,9 @@ const SignUp: FC = () => {
         email: "",
         password: "",
     });
+
+    const [emailErrors, setEmailErrors] = useState<string[]>([]);
+    const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
 
     const router = useRouter();
 
@@ -27,8 +31,9 @@ const SignUp: FC = () => {
             })
 
             if (!response.success) {
+                // alert(JSON.stringify(response))
 
-                throw (response);
+                throw response
 
             } else {
 
@@ -38,7 +43,22 @@ const SignUp: FC = () => {
             }
 
         } catch (error) {
-            Toast.error(error.message);
+
+            setEmailErrors([]);
+            setPasswordErrors([]);
+
+            if (error instanceof Error) {
+
+                Toast.error(error.message);
+
+            } else {
+                const errors = error.errors;
+
+                setEmailErrors(errors.email);
+                setPasswordErrors(errors.password);
+
+            }
+
         }
     };
 
@@ -53,25 +73,25 @@ const SignUp: FC = () => {
                         <h1 className='font-mono text-3xl text-center mt-5 pb-3 border-b-2 border-yellow'><span className='text-yellow font'>Check</span>Out</h1>
 
                         <h3 className="font-mono text-2xl font-semibold pt-3 text-center mb-5">
-                            Sign Up
+                            Register
                         </h3>
 
-                        <input
-                            className="border-2 border p-3 mb-2"
-                            type="text"
+                        <TextInput
                             name="email"
-                            placeholder="Username/Email"
                             value={formData.email}
+                            errors={emailErrors}
+                            placeholder="Email"
                             onChange={(e) =>
                                 setFormData({ ...formData, email: e.target.value })
                             }
                         />
-                        <input
-                            className="border-2 border p-3 mb-2"
-                            type="password"
+
+                        <TextInput
                             name="password"
-                            placeholder="Password"
+                            type="password"
                             value={formData.password}
+                            errors={passwordErrors}
+                            placeholder="Password"
                             onChange={(e) =>
                                 setFormData({ ...formData, password: e.target.value })
                             }
