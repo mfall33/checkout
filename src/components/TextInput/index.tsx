@@ -22,8 +22,8 @@ const Button: React.FC<ButtonProps> = ({ value, onChange, placeholder, name, typ
 
         {errors &&
             <ul className='list-disc pl-5'>
-                {errors?.map(error =>
-                    <li className='text-red-600 text-xs font-mono mb-2 italic'>{error}</li>
+                {errors?.map((error, index) =>
+                    <li key={`${error.substring(0, 4)}-${index}`} className='text-red-600 text-xs font-mono mb-2 italic'>{error}</li>
                 )}
             </ul>
         }

@@ -29,25 +29,29 @@ const Login: FC = () => {
             .then(data => {
 
                 if (data.error) {
-                    throw new Error(data.error);
+                    throw data.error;
                 }
 
                 Toast("Logged in successfully!");
                 router.push(data.url);
 
             })
-            .catch(err => {
+            .catch(error => {
 
                 setPasswordErrors([]);
                 setEmailErrors([]);
 
-                if (typeof (err.message) === 'string') {
-                    Toast.error(err.message);
+                if (error instanceof Error) {
+
+                    Toast.error(error.message);
+
                 } else {
-                    const errors = (JSON.parse(err.message));
+                    
+                    const errors = JSON.parse(error);
 
                     setEmailErrors(errors.email);
                     setPasswordErrors(errors.password);
+
                 }
 
             });

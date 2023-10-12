@@ -9,3 +9,4 @@ WHAT NEEDS DONE
 --Mobile responsiveness
 --Internal code cleanup and reflect on project structure (make changes where best suited)
 --Seperate some logic out into hooks
+--Calling cart on every screen should use some kind of context wrapper for this
