@@ -50,7 +50,7 @@ const ProductCard: FC<CardProps> = ({
                 <Image
                     onClick={onHeartClick}
                     className="card-like"
-                    src={`/assets/Heart-${inWishList ? 'Full' : 'Empty'}.png`}
+                    src={`/assets/heart-${inWishList ? 'full' : 'empty'}.png`}
                     alt="Heart"
                     width="25"
                     height="25"

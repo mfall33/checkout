@@ -75,7 +75,7 @@ const Product: FC = () => {
                             <h2 className="font-mono font-semibold text-lg mt-3 md:mt-0 inline-flex">{product.name} - (£{product.price}) - <Image
                                 onClick={addToWishList}
                                 className="cursor-pointer ms-3 mb-1"
-                                src={`/assets/Heart-${productStore.wishList.some(prod => prod?._id === product._id) ? 'Full' : 'Empty'}.png`}
+                                src={`/assets/heart-${productStore.wishList.some(prod => prod?._id === product._id) ? 'full' : 'empty'}.png`}
                                 alt="Heart"
                                 width="25"
                                 height="25"
