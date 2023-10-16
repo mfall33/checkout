@@ -2,7 +2,6 @@
 
 WHAT NEEDS DONE
 
---Calling cart on every screen should use some kind of context wrapper for this
 --Swap any non caching API calls over to AXIOS
 --Mobile responsiveness
 --Initial load issues with zustand need fixed
