@@ -3,8 +3,8 @@ import '../styles/app.scss';
 
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { ToastProvider } from '@/providers/toastProvider';
 import { CartProvider } from '@/providers/cartProvider';
+import { ToastProvider } from '@/providers/toastProvider';
 import { NextAuthProvider } from '@/providers/sessionProvider';
 
 const inter = Inter({ subsets: ['latin'] })

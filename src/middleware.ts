@@ -20,7 +20,7 @@ export async function middleware(req: NextRequest) {
 
     } catch (e) {
 
-        return NextResponse.redirect((`${process.env.APP_BASE_URL}`));
+        return NextResponse.redirect((`${process.env.APP_BASE_URL}/login`));
 
     }
 

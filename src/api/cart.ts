@@ -8,12 +8,13 @@ export const getCart = async (token: string) => {
                 'Content-Type': 'application/json',
                 'x-access-token': token
             },
+            credentials: 'include'
         })
         .then((res) => res.json())
         .then(data => {
 
             if (data.message) {
-                throw Error(data.message);
+                throw data;
             }
 
             return data;

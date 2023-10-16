@@ -9,9 +9,48 @@ input[type=range] {
 }
 
 header {
+  z-index: 9999;
+  position: relative;
+
   .dropdown {
     .dropdown-content {
       border-bottom: 2px solid $lavender;
     }
   }
+}
+
+
+
+.product-filters {
+  display: flex;
+  align-items: stretch;
+  position: relative;
+}
+
+@media(max-width: 640px) {
+
+  .product-filters {
+    .dropdown {
+      position: unset;
+
+      .dropdown-content {
+        width: 100%;
+        margin-top: 5px;
+        border-radius: 0px;
+      }
+    }
+  }
+
+}
+
+.product-filter-dropdown {
+  width: 12rem;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+  margin-left: 0.5rem;
+  background-color: $lavender;
+}
+
+.product-filter-dropdown:first-of-type {
+  margin-left: 0;
 }

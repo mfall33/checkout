@@ -212,14 +212,14 @@ const Products: FC = () => {
             <p className="font-mono text-sm font-light">Indulge in a shopping extravaganza with our 'Shop til you drop!' collection on our ecommerce website. Discover a treasure trove of irresistible deals, trendy fashion, cutting-edge electronics, and more. Unleash your inner shopaholic and explore a world of limitless choices. Whether you're seeking the latest fashion statements or tech innovations, our curated selection ensures you'll find everything you desire. Get ready to shop with abandon and treat yourself to a truly unforgettable retail therapy experience!</p>
           </div>
 
-
-          <div className="flex items-center">
+          <div className="product-filters">
 
             <Dropdown
               active={(sort !== SORT_BY)}
               items={SORT_OPTIONS}
               option={sort}
               side={"right"}
+              classes={"ml-0"}
               onClearPress={handleSortClear}
               renderItem={(item, index) =>
                 <li

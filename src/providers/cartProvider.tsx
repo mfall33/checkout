@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 import { getCart } from "@/api/cart";
 import useStore from "@/store/useStore";
@@ -8,6 +8,7 @@ import { useProductsStore } from "@/store";
 import Toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 import { LoadingCover } from "@/components";
+import { destroyCookie } from "nookies";
 
 type Props = {
     children?: React.ReactNode;
@@ -31,7 +32,16 @@ export const CartProvider = ({ children }: Props) => {
                 getCart(token)
                     .then(productStore?.setCart)
                     .then(() => setShowChildren(true))
-                    .catch(err => Toast.error("Failed to fetch Cart"));
+                    .catch((err) => {
+                        if (err.message.includes('Unauthorized')) {
+                            localStorage.clear();
+                            destroyCookie(null, 'pid');
+                            signOut();
+                            return
+                        }
+
+                        Toast("Failed to fetch Cart!");
+                    });
 
             }
 

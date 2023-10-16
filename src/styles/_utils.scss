@@ -74,11 +74,14 @@
 }
 
 .dropdown {
+    display: flex;
+    align-items: center;
     position: relative;
     z-index: 999;
     transition: all 0.5s ease;
 
     .dropdown-trigger {
+        width: 100%;
         transition: all 0.5s ease;
         border: 2px solid $lavender;
         text-align: center;

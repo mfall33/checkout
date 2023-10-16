@@ -256,12 +256,12 @@ const Cart: FC = () => {
         <div className="container m-auto py-8 flex flex-wrap">
 
             {!loading && productStore &&
-                <>
+                <div className="p-3 md:p-0 w-full">
                     <h3 className="text-xl font-mono font-semibold w-full">Your Items ({productStore?.cart?.products.length})</h3>
 
                     <div className="grid grid-cols-12 gap-4 w-full mt-3">
 
-                        <div className="checkout-items col-span-9">
+                        <div className="checkout-items col-span-12 sm:col-span-9">
                             {productStore?.cart?.products?.map(cartProduct =>
                                 <CartItem
                                     key={`${cartProduct.product._id} - ${cartProduct.product.quantity}`}
@@ -307,7 +307,7 @@ const Cart: FC = () => {
 
                         </div>
 
-                        <aside className="checkout-cart-totals col-span-3">
+                        <aside className="checkout-cart-totals col-span-12 sm:col-span-3">
                             <>
                                 <h1 className="text-xl font-mono font-semibold w-full">Total</h1>
                                 <p className="mt-3">Delivery: <b>Free</b></p>
@@ -324,7 +324,7 @@ const Cart: FC = () => {
                         </aside>
 
                     </div>
-                </>
+                </div>
             }
         </div>
     </>);
