@@ -4,6 +4,7 @@ import '../styles/app.scss';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { ToastProvider } from '@/providers/toastProvider';
+import { CartProvider } from '@/providers/cartProvider';
 import { NextAuthProvider } from '@/providers/sessionProvider';
 
 const inter = Inter({ subsets: ['latin'] })
@@ -24,7 +25,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <NextAuthProvider>
           <ToastProvider>
-            {children}
+            <CartProvider>
+              {children}
+            </CartProvider>
           </ToastProvider>
         </NextAuthProvider>
       </body>

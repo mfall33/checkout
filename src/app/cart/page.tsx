@@ -12,7 +12,7 @@ import { stripe } from "@/utils";
 import { ICartProduct } from "@/models";
 import useStore from "@/store/useStore";
 import { useProductsStore } from "@/store";
-import { getCart, removeItemFromCart, updateQuantity } from "@/api/cart";
+import { removeItemFromCart, updateQuantity } from "@/api/cart";
 import { Button, CartItem, Header, LoadingCover, PaymentMethod } from "@/components";
 
 const Cart: FC = () => {
@@ -35,10 +35,6 @@ const Cart: FC = () => {
             // retrieving the cart and payment methods 
 
             const token = session.data?.user.access_token;
-
-            getCart(token)
-                .then(productStore?.setCart)
-                .catch(err => Toast.error("Something went wrong"));
 
             getPaymentMethods(session.data?.user.stripe_customer_id)
 
@@ -90,7 +86,6 @@ const Cart: FC = () => {
     }, [loading]);
 
     const getPaymentMethods = (stripe_customer_id: string) => {
-
 
         stripe.customers.listPaymentMethods(stripe_customer_id)
             .then((response: any) => {
@@ -205,7 +200,7 @@ const Cart: FC = () => {
                 setPaymentMethod("");
             }
 
-            Toast("Payment method removed!")
+            Toast("Payment method removed!");
 
         }
     }

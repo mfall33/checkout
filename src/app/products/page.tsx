@@ -40,10 +40,6 @@ const Products: FC = () => {
 
       const token = session.data?.user.access_token;
 
-      getCart(token)
-        .then(productStore?.setCart)
-        .catch(err => Toast.error("Failed to fetch Cart"));
-
       getProducts(page, token)
         .then((data) => {
 

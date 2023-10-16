@@ -1,6 +1,6 @@
 "use client";
 
-import { BLACK, LAVENDER, RED, YELLOW } from '@/constants';
+import { BLACK, RED } from '@/constants';
 import { Toaster, resolveValue } from 'react-hot-toast';
 
 type Props = {
