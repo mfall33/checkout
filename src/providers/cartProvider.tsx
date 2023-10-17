@@ -33,11 +33,12 @@ export const CartProvider = ({ children }: Props) => {
                     .then(productStore?.setCart)
                     .then(() => setShowChildren(true))
                     .catch((err) => {
+
                         if (err.message.includes('Unauthorized')) {
                             localStorage.clear();
                             destroyCookie(null, 'pid');
                             signOut();
-                            return
+                            return;
                         }
 
                         Toast("Failed to fetch Cart!");
