@@ -25,8 +25,6 @@ export const CartProvider = ({ children }: Props) => {
 
         if (session.status !== 'loading') {
 
-            // alert(33)
-
             const token = session.data?.user.access_token;
 
             if (token) {
@@ -34,11 +32,10 @@ export const CartProvider = ({ children }: Props) => {
                 getCart(token)
                     .then(productStore?.setCart)
                     .then(() => {
-                        alert(33);
                         setShowChildren(true);
                     })
                     .catch((err) => {
-                        alert(33)
+
                         if (err.message.includes('Unauthorized')) {
                             localStorage.clear();
                             destroyCookie(null, 'pid');
@@ -51,7 +48,9 @@ export const CartProvider = ({ children }: Props) => {
                     })
 
             } else {
+
                 setShowChildren(true);
+
             }
 
         }
