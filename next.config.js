@@ -16,10 +16,6 @@ module.exports = {
     STRIPE_PUBLISHABLE_KEY: 'pk_test_51L8mF5KlTsQ2xJIM2FjrKa6Gfg6niIascDVp6nC0ssynIkmK5YY1azqVDZsWuTVBbhxZlyRxqim9t0JilmXA139500IFeIwlGJ'
   },
   typescript: {
-    // !! WARN !!
-    // Dangerously allow production builds to successfully complete even if
-    // your project has type errors.
-    // !! WARN !!
     ignoreBuildErrors: true,
   },
 }

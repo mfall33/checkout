@@ -12,7 +12,7 @@ const Dropdown: React.FC<DropdownProps> = ({ active, option, items, side, classe
 
     return (
         <div className={`product-filter-dropdown dropdown ${side} ${classes ?? ''}`}>
-            <div className={`dropdown-trigger ${active ? 'active' : ''} p-3 font-medium}`}>{option} &#x21e9;</div>
+            <div className={`dropdown-trigger ${active ? 'active' : ''} p-3 font-medium`}>{option} &#x21e9;</div>
             <div className="dropdown-content hide-scrollbar">
                 {onClearPress &&
                     <h3 className="font-semibold cursor-pointer text-right mb-3 select-none" onClick={onClearPress}>CLEAR</h3>
@@ -24,7 +24,7 @@ const Dropdown: React.FC<DropdownProps> = ({ active, option, items, side, classe
                 </ul>
             </div>
         </div>
-    )
+    );
 
 }
 

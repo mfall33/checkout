@@ -14,7 +14,7 @@ const CartItem = ({
     id, name, price, quantity, brand, onRemovePress, onQuantityChange
 }: CartItemProps) => {
     return (<div className="checkout-cart-item">
-        <div className="pr-0 md:pr-3">
+        <div className="mr-2 sm:mr-0 pr-0 md:pr-3">
             <BlurImage
                 src="/assets/model.webp"
                 alt="Model"
