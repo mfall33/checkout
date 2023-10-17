@@ -1,14 +1,14 @@
 "use client";
 
+import Toast from "react-hot-toast";
+import { destroyCookie } from "nookies";
+import { useEffect, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 
 import { getCart } from "@/api/cart";
 import useStore from "@/store/useStore";
 import { useProductsStore } from "@/store";
-import Toast from "react-hot-toast";
-import { useEffect, useState } from "react";
 import { LoadingCover } from "@/components";
-import { destroyCookie } from "nookies";
 
 type Props = {
     children?: React.ReactNode;
@@ -42,7 +42,9 @@ export const CartProvider = ({ children }: Props) => {
                         }
 
                         Toast("Failed to fetch Cart!");
-                    });
+
+                    })
+                    .finally(() => setShowChildren(true))
 
             }
 

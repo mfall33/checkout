@@ -1,12 +1,12 @@
 'use client';
 
 import Link from "next/link";
-import { FC, useState, ChangeEvent } from "react";
-
 import Toast from 'react-hot-toast';
-import { Button, TextInput } from "@/components";
 import { signIn } from 'next-auth/react';
 import { useRouter } from "next/navigation";
+import { FC, useState, ChangeEvent } from "react";
+
+import { Button, TextInput } from "@/components";
 
 const Login: FC = () => {
 
@@ -38,8 +38,8 @@ const Login: FC = () => {
             })
             .catch(error => {
 
-                setPasswordErrors([]);
                 setEmailErrors([]);
+                setPasswordErrors([]);
 
                 if (error instanceof Error) {
 
